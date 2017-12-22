@@ -1,0 +1,11 @@
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\bin\Debug\RDB.exe
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\bin\Debug\RDB.pdb
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.csprojResolveAssemblyReference.cache
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.MainForm.resources
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.Properties.Resources.resources
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.csproj.GenerateResource.Cache
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.exe
+c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.pdb
+C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.HistogramForm.resources
+C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.SelectBandsForm.resources
+C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.HistogramCompareForm.resources
