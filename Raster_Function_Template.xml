@@ -1,0 +1,29 @@
+﻿<XmlRasterFunctionTemplate>
+<Name>Raster Function Template</Name>
+<Description>A raster function template.</Description>
+
+<!-- 全色锐化-->
+<!-- 默认使用多波段影响的第四波段作为输入参数中的红外波段 可以少用两个参数-->
+<!-- 分别对应四个波段的权值，不做加起来等于1的验证 采用输入之后做归一化处理的方式-->
+<Function name='Pansharpening' description='Enhances the spatial resolution of a multiband image by fusing it with a higher-resolution panchromatic image.'>
+	<Red>0.16600000000000001</Red>
+	<Green>0.16700000000000001</Green>
+	<Blue>0.16700000000000001</Blue>
+	<Infra>0.5</Infra>
+	<PanImage>TM-30m</PanImage>
+	<MSImage>TM-30m</MSImage>
+	<PansharpeningType>2</PansharpeningType>
+	<Save>1</Save>
+	<Output>panSharpen_Result</Output>
+</Function>
+
+<!-- 卷积-->
+<Function name='Convolution' description='Performs filtering on the pixel values in a raster, which can be used for sharpening an image, blurring an image, detecting edges within an image, or other kernel-based enhancements.'>
+	<Raster>panSharpen_Result</Raster>
+	<Type>0</Type>
+	<Save>1</Save>
+	<Output>panSharpen_Result_conv</Output>
+</Function>
+</XmlRasterFunctionTemplate>
+
+

@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Xml;
+
 
 using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Carto;
@@ -213,13 +215,14 @@ namespace RDB
             {
                 //SDE连接数据库参数设置
                 IPropertySet propertySet = new PropertySet();
-                propertySet.SetProperty("SERVER", "localhost");
-                propertySet.SetProperty("INSTANCE", "sde:oracle11g:localhost/orcl");
-                propertySet.SetProperty("DATABASE", "sde1363");
+                propertySet.SetProperty("SERVER", "es27");
+                propertySet.SetProperty("INSTANCE", "sde:oracle11g:es27/orcl");
+                propertySet.SetProperty("DATABASE", "sde");
                 propertySet.SetProperty("USER", "sde");
-                propertySet.SetProperty("PASSWORD", "sde");
-                propertySet.SetProperty("VSESION", "sde.DEFAULT");
-                propertySet.SetProperty("AUTHENTICATION_MODE", "DBMS");
+                propertySet.SetProperty("PASSWORD", "123");
+                propertySet.SetProperty("VERSION", "sde.DEFAULT");
+                propertySet.SetProperty("AUTHENTICATION_MORE", "DBMS");
+
                 //指定SDE工作空间factory
                 Type factoryType = Type.GetTypeFromProgID("esriDataSourcesGDB.SdeWorkspaceFactory");
                 IWorkspaceFactory workspaceFactory = (IWorkspaceFactory)Activator.CreateInstance(factoryType);
@@ -1046,7 +1049,7 @@ namespace RDB
                 int index = cmb_StatisticsBand.SelectedIndex;
                 if (cmb_StatisticsBand.SelectedItem.ToString()=="全部波段")
                 {
-                    string StatRes = null;
+                    string StatRes = "";
                     for (int i = 0; i < rstBandColl.Count; i++)
                     {
                         IRasterBand rstBand = rstBandColl.Item(i);
@@ -1054,15 +1057,15 @@ namespace RDB
                         bool hasStat = false;
                         rstBand.HasStatistics(out hasStat);
                         ////如果不存在统计数据，就进行波段信息统计
-                        //if (null == rstBand.Statistics || !hasStat)
-                        //{
-                        //    IRasterBandEdit rasterBandEdit = rstBand as IRasterBandEdit;
-                        //    rasterBandEdit.ComputeStatsHistogram(0);
-                        //}
+                        if (null == rstBand.Statistics || !hasStat)
+                        {
+                            IRasterBandEdit rasterBandEdit = rstBand as IRasterBandEdit;
+                            rasterBandEdit.ComputeStatsHistogram(0);
+                        }
                         //获取统计结果
                         rstBand.ComputeStatsAndHist();
                         IRasterStatistics rstStat = rstBand.Statistics;
-                        StatRes = StatRes + "第" + (i + 1) + "波段：" + "  平均值为:" + rstStat.Mean + "  最大值为：" + rstStat.Maximum + "  最小值为:" + rstStat.Minimum + "  标准差为:" + rstStat.StandardDeviation + "\r\n";
+                        StatRes += "第" + (i + 1) + "波段：" + "  平均值为:" + rstStat.Mean + "  最大值为：" + rstStat.Maximum + "  最小值为:" + rstStat.Minimum + "  标准差为:" + rstStat.StandardDeviation + "\r\n";                                        
                     }
                     //提示框输出统计结果
                     MessageBox.Show(StatRes, "统计结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -1075,19 +1078,19 @@ namespace RDB
                     //获取波段
                     IRasterBand rstBand = rstBandColl.Item(bandnum);
                     //判断该波段是否已经存在统计数据
-                    //bool hasStat = false;
-                    //rstBand.HasStatistics(out hasStat);
+                    bool hasStat = false;
+                    rstBand.HasStatistics(out hasStat);
                     ////如果不存在统计数据，就进行波段信息统计
-                    //if (null == rstBand.Statistics || !hasStat)
-                    //{
-                    //    IRasterBandEdit2 rasterBandEidt = rstBand as IRasterBandEdit2;
-                    //    rasterBandEidt.ComputeStatsHistogram(0);
-                    //}
+                    if (null == rstBand.Statistics || !hasStat)
+                    {
+                        IRasterBandEdit rasterBandEidt = rstBand as IRasterBandEdit;
+                        rasterBandEidt.ComputeStatsHistogram(0);
+                    }
                     //获取统计结果
                     rstBand.ComputeStatsAndHist();
                     IRasterStatistics rstStat = rstBand.Statistics;
-                    string bandStatRes = null;
-                    bandStatRes = bandStatRes + "第" + (bandnum + 1) + "波段：" + "  平均值为:" + rstStat.Mean + "  最大值为：" + rstStat.Maximum + "  最小值为:" + rstStat.Minimum + "  标准差为:" + rstStat.StandardDeviation + "\r\n";
+                    String bandStatRes = null;
+                    bandStatRes += "第" + (bandnum + 1) + "波段：" + "  平均值为:" + rstStat.Mean + "  最大值为：" + rstStat.Maximum + "  最小值为:" + rstStat.Minimum + "  标准差为:" + rstStat.StandardDeviation + "\r\n";
                     MessageBox.Show(bandStatRes, "统计结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 
@@ -1095,7 +1098,6 @@ namespace RDB
                 //获取当前选中的栅格图层的栅格波段
 
                 //如果选择全部波段，则遍历该图层全部波段，并统计信息
-
 
             }
             catch (System.Exception ex)//异常处理，输出错误信息
@@ -1211,7 +1213,7 @@ namespace RDB
                 if (null == rasterBand.Statistics || !hasStat || rasterBand.Histogram == null)
                 {
                     //转换IRasterBandEdit2接口，调用ComputeStatsHistogram方法进行波段信息统计和直方图绘制
-                    IRasterBandEdit2 rasterBandEdit = rasterBand as IRasterBandEdit2;
+                    IRasterBandEdit rasterBandEdit = rasterBand as IRasterBandEdit;
                     rasterBandEdit.ComputeStatsHistogram(0);
                 }
 
@@ -1654,7 +1656,7 @@ namespace RDB
                         //创建多元操作组件类对象
                         IMultivariateOp mulop = new RasterMultivariateOpClass();
                         //设定结果文件保存路径
-                        string signatureFilePath = "F:\\RDB";
+                        string signatureFilePath = "D:\\RDB";
                         string fullPath = signatureFilePath + "\\" + "classify_signature";
                         string treePath = signatureFilePath + "\\" + "signature_treediagram";
                         //获取用户输入的分类数量
@@ -1850,7 +1852,7 @@ namespace RDB
                 rasterProps.NoDataValue = 0;
                 rasterProps.PixelType = rstPixelType.PT_USHORT;
                 //存储剪裁结果栅格图像
-                IWorkspace rstWs = wsf.OpenFromFile(@"F:\RDB", 0);
+                IWorkspace rstWs = wsf.OpenFromFile(@"D:\RDB", 0);
                 //保存输出
                 ISaveAs saveas = (ISaveAs)raster;
                 saveas.SaveAs("clip_result.tif", rstWs, "TIFF");
@@ -1865,7 +1867,7 @@ namespace RDB
                 axMapControl1.AddLayer(clipLayer);
                 axMapControl1.ActiveView.Refresh();
                 axTOCControl1.Update();
-                //更新combobox里面的想想，图层和波段的
+                //更新combobox里面的选项，图层和波段的
                 iniCmbItems();
             }
             catch (System.Exception ex)//异常处理，输出错误信息
@@ -1876,56 +1878,60 @@ namespace RDB
         //点击按钮实现高空间分辨率单波段图像和低空间分辨率多波段图像的融合操作
         private void btn_PanSharpen_Click(object sender, EventArgs e)
         {
-            ILayer sigleLayer = GetLayerByName(cmb_PanSharpenSigleLayer.SelectedItem.ToString());
-            ILayer multiLayer = GetLayerByName(cmb_PanSharpenMultiLayer.SelectedItem.ToString());
-            IRaster2 panRaster2 = ((IRasterLayer)sigleLayer).Raster as IRaster2;
-            IRaster2 multiRaster2 = ((IRasterLayer)multiLayer).Raster as IRaster2;
-            IRasterDataset panDataset = panRaster2.RasterDataset;
-            IRasterDataset multiDataset = multiRaster2.RasterDataset;
-            //默认波段顺序，RGB和近红外
-            //创建全色和多光谱栅格数据集的full栅格对象
-            IRaster panRaster = ((IRasterDataset2)panDataset).CreateFullRaster();
-            IRaster multiRaster = ((IRasterDataset2)multiDataset).CreateFullRaster();
-            //设置红外波段
-            IRasterBandCollection rasterbandCol = (IRasterBandCollection)multiRaster;
-            IRasterBandCollection infredRaster = new RasterClass();
-            infredRaster.AppendBand(rasterbandCol.Item(3));
+            try {
+                ILayer sigleLayer = GetLayerByName(cmb_PanSharpenSigleLayer.SelectedItem.ToString());
+                ILayer multiLayer = GetLayerByName(cmb_PanSharpenMultiLayer.SelectedItem.ToString());
+                IRaster2 panRaster2 = ((IRasterLayer)sigleLayer).Raster as IRaster2;
+                IRaster2 multiRaster2 = ((IRasterLayer)multiLayer).Raster as IRaster2;
+                IRasterDataset panDataset = panRaster2.RasterDataset;
+                IRasterDataset multiDataset = multiRaster2.RasterDataset;
+                //默认波段顺序，RGB和近红外
+                //创建全色和多光谱栅格数据集的full栅格对象
+                IRaster panRaster = ((IRasterDataset2)panDataset).CreateFullRaster();
+                IRaster multiRaster = ((IRasterDataset2)multiDataset).CreateFullRaster();
+                //设置红外波段
+                IRasterBandCollection rasterbandCol = (IRasterBandCollection)multiRaster;
+                IRasterBandCollection infredRaster = new RasterClass();
+                infredRaster.AppendBand(rasterbandCol.Item(3));
 
-            //设置全色波段的属性
-            IRasterProps panSharpenRasterProps = (IRasterProps)multiRaster;
-            IRasterProps panRasterProps = (IRasterProps)panRaster;
-            panSharpenRasterProps.Width = panRasterProps.Width;
-            panSharpenRasterProps.Height = panRasterProps.Height;
-            panSharpenRasterProps.Extent = panRasterProps.Extent;
-            multiRaster.ResampleMethod = rstResamplingTypes.RSP_BilinearInterpolationPlus;
+                //设置全色波段的属性
+                IRasterProps panSharpenRasterProps = (IRasterProps)multiRaster;
+                IRasterProps panRasterProps = (IRasterProps)panRaster;
+                panSharpenRasterProps.Width = panRasterProps.Width;
+                panSharpenRasterProps.Height = panRasterProps.Height;
+                panSharpenRasterProps.Extent = panRasterProps.Extent;
+                multiRaster.ResampleMethod = rstResamplingTypes.RSP_BilinearInterpolationPlus;
 
-            //创建全色锐化过滤器和设置其参数
-            IPansharpeningFilter pansharpenFilter = new PansharpeningFilterClass();
-            pansharpenFilter.InfraredImage = (IRaster)infredRaster;
-            pansharpenFilter.PanImage=(IRaster)panRaster;
-            pansharpenFilter.PansharpeningType=esriPansharpeningType.esriPansharpeningESRI;
-            pansharpenFilter.PutWeights(0.167,0.167,0.167,0.5);
+                //创建全色锐化过滤器和设置其参数
+                IPansharpeningFilter pansharpenFilter = new PansharpeningFilterClass();
+                pansharpenFilter.InfraredImage = (IRaster)infredRaster;
+                pansharpenFilter.PanImage = (IRaster)panRaster;
+                pansharpenFilter.PansharpeningType = esriPansharpeningType.esriPansharpeningESRI;
+                pansharpenFilter.PutWeights(0.1, 0.167, 0.167, 0.5);
 
-            //将全色锐化过滤器设置于多光谱栅格对象上
-            IPixelOperation pixeOperation = (IPixelOperation)multiRaster;
-            pixeOperation.PixelFilter = (IPixelFilter)pansharpenFilter;
+                //将全色锐化过滤器设置于多光谱栅格对象上
+                IPixelOperation pixeOperation = (IPixelOperation)multiRaster;
+                pixeOperation.PixelFilter = (IPixelFilter)pansharpenFilter;
 
-            //保存结果数据集，并加载显示
-            //加载显示裁剪结果图像
-            IRasterLayer panSharpenLayer = new RasterLayerClass();
-            panSharpenLayer.CreateFromRaster(multiRaster);
-            panSharpenLayer.Name = "panSharpen_Result";
-            panSharpenLayer.SpatialReference = ((IGeoDataset)multiRaster).SpatialReference;
+                //保存结果数据集，并加载显示
+                //加载显示裁剪结果图像
+                IRasterLayer panSharpenLayer = new RasterLayerClass();
+                panSharpenLayer.CreateFromRaster(multiRaster);
+                panSharpenLayer.Name = "panSharpen_Result";
+                panSharpenLayer.SpatialReference = ((IGeoDataset)multiRaster).SpatialReference;
 
-            //添加到控件中
-            axMapControl1.AddLayer(panSharpenLayer);
-            axMapControl1.ActiveView.Refresh();
-            axTOCControl1.Update();
+                //添加到控件中
+                axMapControl1.AddLayer(panSharpenLayer);
+                axMapControl1.ActiveView.Refresh();
+                axTOCControl1.Update();
 
-            //更新combobox里面的选项（图层和波段的）
-            iniCmbItems();
-
-
+                //更新combobox里面的选项（图层和波段的）
+                iniCmbItems();
+            }
+            catch (System.Exception ex)//异常处理，输出错误信息
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }                     
         }
 
         //点击镶嵌按钮，对选中的栅格目录的遥感影响进行镶嵌处理
@@ -1936,8 +1942,8 @@ namespace RDB
             {
                 //定义待用的字符串变量，表示原栅格数据文件夹路径、结果栅格数据保存路径
                 //特别地，先创建一个个人地理空间数据库，再在其中创建一个栅格目录
-                string inputFolder = @"F:\RDB\mosaic";
-                string outputFolder = @"F:\RDB";
+                string inputFolder = @"D:\RDB\mosaic";
+                string outputFolder = @"D:\RDB";
                 //string outputName = "mosaic.tif";
                 string tempRasterCatalog = "temp_rc";
                 string tempPGDB = "temp.mdb";
@@ -1988,7 +1994,7 @@ namespace RDB
                 
                 //打开输出结果数据集保存路径的工作空间
                 IWorkspaceFactory workspaceFactory = new RasterWorkspaceFactory();
-                string savefile = @"F:\RDB\";
+                string savefile = @"D:\RDB\";
                 IWorkspace workspace_save = workspaceFactory.OpenFromFile(outputFolder,0);
                 string filename = @"mosaic_result.tif";
 
@@ -2287,7 +2293,9 @@ namespace RDB
                         fieldChecker.ValidateWorkspace = (IWorkspace)fcw;
                         fieldChecker.Validate(fields, out enumFieldError, out validatedFields);
                         //创建要素类
-                        IFeatureClass featureClass = fcw.CreateFeatureClass("visibility_featureclass1363", validatedFields, null, null, esriFeatureType.esriFTSimple, "Shape", "");
+                        Random rd = new Random();
+                        int i = rd.Next();
+                        IFeatureClass featureClass = fcw.CreateFeatureClass("visibility_featureclass"  + (i%10000), validatedFields, null, null, esriFeatureType.esriFTSimple, "Shape", "");
 
                         //鼠标点击屏幕绘制点
                         IPoint pt;
@@ -2398,7 +2406,7 @@ namespace RDB
                 IRasterFunction rasterFunction = new ConvolutionFunction();
                 IFunctionRasterDataset functionRasterDataset = new FunctionRasterDataset();
                 IFunctionRasterDatasetName functionRasterDatasetName = (IFunctionRasterDatasetName)new FunctionRasterDatasetNameClass();
-                functionRasterDatasetName.FullName = @"F:\RDB"+"\\"+cmb_FliterMethod.SelectedItem.ToString();
+                functionRasterDatasetName.FullName = @"D:\RDB"+"\\"+cmb_FliterMethod.SelectedItem.ToString();
                 functionRasterDataset.FullName = (IName)functionRasterDatasetName;
                 functionRasterDataset.Init(rasterFunction, rasterFunctionArguments);
 
@@ -2449,7 +2457,7 @@ namespace RDB
                     IRasterFunction rasterFunction = new HillshadeFunction();
                     IFunctionRasterDataset functionRasterDataset= new FunctionRasterDataset();
                     IFunctionRasterDatasetName functionRasterDatasetName = (IFunctionRasterDatasetName)new FunctionRasterDatasetNameClass();
-                    functionRasterDatasetName.FullName = @"F:\RDB" + "\\" + cmb_HillShade.SelectedItem.ToString()+"HillShade";
+                    functionRasterDatasetName.FullName = @"D:\RDB" + "\\" + cmb_HillShade.SelectedItem.ToString()+"HillShade";
                     functionRasterDataset.FullName = (IName)functionRasterDatasetName;
                     functionRasterDataset.Init(rasterFunction, hillshadeFunctionArugments);
 
@@ -2493,7 +2501,7 @@ namespace RDB
                     IRasterFunction rasterFunction = new SlopeFunction();
                     IFunctionRasterDataset functionRasterDataset = new FunctionRasterDataset();
                     IFunctionRasterDatasetName functionRasterDatasetName = (IFunctionRasterDatasetName)new FunctionRasterDatasetNameClass();
-                    functionRasterDatasetName.FullName = @"F:\RDB" + "\\" + cmb_Slope.SelectedItem.ToString() + "Slope";
+                    functionRasterDatasetName.FullName = @"D:\RDB" + "\\" + cmb_Slope.SelectedItem.ToString() + "Slope";
                     functionRasterDataset.FullName = (IName)functionRasterDatasetName;
                     functionRasterDataset.Init(rasterFunction, slopeFunctionArugments);
 
@@ -2535,7 +2543,7 @@ namespace RDB
                     IRasterFunction rasterFunction = new AspectFunction();
                     IFunctionRasterDataset functionRasterDataset = new FunctionRasterDataset();
                     IFunctionRasterDatasetName functionRasterDatasetName = (IFunctionRasterDatasetName)new FunctionRasterDatasetNameClass();
-                    functionRasterDatasetName.FullName = @"F:\RDB" + "\\" + cmb_Aspect.SelectedItem.ToString() + "Aspect";
+                    functionRasterDatasetName.FullName = @"D:\RDB" + "\\" + cmb_Aspect.SelectedItem.ToString() + "Aspect";
                     functionRasterDataset.FullName = (IName)functionRasterDatasetName;
                     functionRasterDataset.Init(rasterFunction, raster2);
 
@@ -2990,7 +2998,7 @@ namespace RDB
                     IFeatureWorkspace featureWorkspace = (IFeatureWorkspace)workspace;
                     //保存到指定路径
                     IWorkspaceFactory wsf = new ShapefileWorkspaceFactory();
-                    IWorkspace wp = wsf.OpenFromFile("F://RDB", 0);
+                    IWorkspace wp = wsf.OpenFromFile("D://RDB", 0);
                     IFeatureWorkspace fw = (IFeatureWorkspace)wp;
                     //创建要素类
                     IFeatureClass featureClass = featureWorkspace.CreateFeatureClass("TinVoronoi", fields, ocDescription.InstanceCLSID, ocDescription.ClassExtensionCLSID, esriFeatureType.esriFTSimple, fcDescription.ShapeFieldName, "");
@@ -3310,6 +3318,129 @@ namespace RDB
 
             return PixelValue;
         }
+
+        private void Btn_ReadXML_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(@"D:\\RDB\\Raster_Function_Template.xml");
+
+                XmlNode xn = doc.SelectSingleNode("XmlRasterFunctionTemplate");
+
+                XmlNodeList xnl = xn.ChildNodes;
+
+                foreach (XmlNode xn1 in xnl)
+                {
+                    if (xn1 is XmlComment)
+                        continue;
+                    //else if (xn1.
+                    XmlElement xe = (XmlElement)xn1;
+                    if (xe.Name == "Function")
+                    {
+                        RasterFunction func = new RasterFunction();
+                        func.name = xe.GetAttribute("name");
+                        func.description = xe.GetAttribute("description");
+                        if (func.name.Equals("Convolution"))
+                        {
+                            XmlNodeList xnl0 = xe.ChildNodes;
+                            string inputRaster = null, outputRaster = null;
+                            int type = -1;
+                            bool save = false;
+                            foreach (XmlNode xn2 in xnl0){
+                                if (xn2 is XmlComment)
+                                    continue;
+                                switch (xn2.Name)
+                                {
+                                    case "Raster":
+                                        inputRaster = xn2.InnerText;
+                                        break;
+                                    case  "Type":
+                                        type = Convert.ToInt16(xn2.InnerText);
+                                        break;
+                                    case "Save":
+                                        save = Convert.ToInt16(xn2.InnerText) == 0 ? false : true;
+                                        break;
+                                    case "Output":
+                                        outputRaster = xnl0.Item(3).InnerText;
+                                        break;                                  
+                                }
+                            }
+                            ILayer layer = GetLayerByName(inputRaster);
+                            ILayer outLayer = RasterFunction.Convolution(layer, type, outputRaster);
+                            axMapControl1.AddLayer(outLayer);
+                            axMapControl1.ActiveView.Refresh();
+                            axTOCControl1.Update();
+
+                            //更新combobox里面的选项（图层的和波段的）
+                            iniCmbItems();                        
+                        }
+                        else if (xe.GetAttribute("name").Equals("Pansharpening"))
+                        {
+                            XmlNodeList xnl0 = xe.ChildNodes;
+                            double red=0, green=0, blue=0, infra=0;
+                            string panImage = null, MSImage = null, outputRaster = null;
+                            int type = -1;
+                            bool save;
+                            foreach (XmlNode xn2 in xnl0)
+                            {
+                                if (xn2 is XmlComment)
+                                    continue;
+                                switch (xn2.Name)
+                                {
+                                    case "Red":
+                                        red = Convert.ToDouble(xn2.InnerText);
+                                        break;
+                                    case "Green":
+                                        green = Convert.ToDouble(xn2.InnerText);
+                                        break;
+                                    case "Blue":
+                                        blue = Convert.ToDouble(xn2.InnerText); ;
+                                        break;
+                                    case "Infra":
+                                        infra = Convert.ToDouble(xn2.InnerText);
+                                        break;
+                                    case "PanImage":
+                                        panImage = xn2.InnerText;
+                                        break;
+                                    case "MSImage":
+                                        MSImage = xn2.InnerText;
+                                        break;
+                                    case "Type":
+                                        type = Convert.ToInt16(xn2.InnerText);
+                                        break;
+                                    case "Save":
+                                        save = Convert.ToInt16(xn2.InnerText) == 0 ? false : true;
+                                        break;
+                                    case "Output":
+                                        outputRaster = xnl0.Item(3).InnerText;
+                                        break;
+                                }
+                            }
+                            ILayer singleLayer = GetLayerByName(panImage);
+                            ILayer multiLayer = GetLayerByName(MSImage);
+
+                            ILayer panSharpenLayer = RasterFunction.Pansharpening(singleLayer, multiLayer, type, outputRaster);
+                            //添加到控件中
+                            axMapControl1.AddLayer(panSharpenLayer);
+                            axMapControl1.ActiveView.Refresh();
+                            axTOCControl1.Update();
+
+                            //更新combobox里面的选项（图层和波段的）
+                            iniCmbItems();                       
+                        }
+                    }
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+           
+            
+        }
+
 
     }
 }

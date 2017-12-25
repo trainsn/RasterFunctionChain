@@ -9,3 +9,15 @@ c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug
 C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.HistogramForm.resources
 C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.SelectBandsForm.resources
 C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.HistogramCompareForm.resources
+D:\RS\RDB\RDB\bin\Debug\RDB.exe.config
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.exe
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.pdb
+D:\RS\RDB\RDB\bin\Debug\RDB.exe
+D:\RS\RDB\RDB\bin\Debug\RDB.pdb
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.csprojResolveAssemblyReference.cache
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.HistogramCompareForm.resources
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.HistogramForm.resources
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.MainForm.resources
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.Properties.Resources.resources
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.SelectBandsForm.resources
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.csproj.GenerateResource.Cache
