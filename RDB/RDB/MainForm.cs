@@ -3338,11 +3338,8 @@ namespace RDB
                     XmlElement xe = (XmlElement)xn1;
                     if (xe.Name == "Function")
                     {
-                        RasterFunction func = new RasterFunction();
-                        func.name = xe.GetAttribute("name");
-                        func.description = xe.GetAttribute("description");
-                        if (func.name.Equals("Convolution"))
-                        {
+                        if (xe.GetAttribute("name").Equals("Convolution"))
+                        {                            
                             XmlNodeList xnl0 = xe.ChildNodes;
                             string inputRaster = null, outputRaster = null;
                             int type = -1;
@@ -3439,6 +3436,18 @@ namespace RDB
             }
            
             
+        }
+
+        private void convolutionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConvolutionFunc conv = new ConvolutionFunc(axMapControl1.Map);
+            conv.ShowDialog();
+        }
+
+        private void pansharpingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PansharpingFunc pansharping = new PansharpingFunc(axMapControl1.Map);
+            pansharping.ShowDialog();
         }
 
 

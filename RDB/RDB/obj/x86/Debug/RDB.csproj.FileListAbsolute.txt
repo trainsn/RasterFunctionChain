@@ -21,3 +21,5 @@ D:\RS\RDB\RDB\obj\x86\Debug\RDB.MainForm.resources
 D:\RS\RDB\RDB\obj\x86\Debug\RDB.Properties.Resources.resources
 D:\RS\RDB\RDB\obj\x86\Debug\RDB.SelectBandsForm.resources
 D:\RS\RDB\RDB\obj\x86\Debug\RDB.csproj.GenerateResource.Cache
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.ConvolutionFunc.resources
+D:\RS\RDB\RDB\obj\x86\Debug\RDB.PansharpingFunc.resources

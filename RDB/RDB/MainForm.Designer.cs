@@ -205,6 +205,8 @@ namespace RDB
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.TSMI_ZoomToLayer = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_DeleteLayer = new System.Windows.Forms.ToolStripMenuItem();
+            this.convolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pansharpingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             tbc_ImageAnalysis = new System.Windows.Forms.TabControl();
             tbc_ImageAnalysis.SuspendLayout();
             this.tbP_DataManagement.SuspendLayout();
@@ -2059,7 +2061,9 @@ namespace RDB
             // xMLToolStripMenuItem
             // 
             this.xMLToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.readXMLToolStripMenuItem});
+            this.readXMLToolStripMenuItem,
+            this.convolutionToolStripMenuItem,
+            this.pansharpingToolStripMenuItem});
             this.xMLToolStripMenuItem.Name = "xMLToolStripMenuItem";
             this.xMLToolStripMenuItem.Size = new System.Drawing.Size(46, 21);
             this.xMLToolStripMenuItem.Text = "XML";
@@ -2167,6 +2171,20 @@ namespace RDB
             this.TSMI_DeleteLayer.Size = new System.Drawing.Size(160, 22);
             this.TSMI_DeleteLayer.Text = "É¾³ýµ±Ç°Í¼²ã";
             this.TSMI_DeleteLayer.Click += new System.EventHandler(this.TSMI_DeleteLayer_Click);
+            // 
+            // convolutionToolStripMenuItem
+            // 
+            this.convolutionToolStripMenuItem.Name = "convolutionToolStripMenuItem";
+            this.convolutionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.convolutionToolStripMenuItem.Text = "Convolution";
+            this.convolutionToolStripMenuItem.Click += new System.EventHandler(this.convolutionToolStripMenuItem_Click);
+            // 
+            // pansharpingToolStripMenuItem
+            // 
+            this.pansharpingToolStripMenuItem.Name = "pansharpingToolStripMenuItem";
+            this.pansharpingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pansharpingToolStripMenuItem.Text = "Pansharping";
+            this.pansharpingToolStripMenuItem.Click += new System.EventHandler(this.pansharpingToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -2422,6 +2440,8 @@ namespace RDB
         private System.Windows.Forms.Button btn_NDVI_Bottom;
         private System.Windows.Forms.ToolStripMenuItem xMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem readXMLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convolutionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pansharpingToolStripMenuItem;
     }
 }
 

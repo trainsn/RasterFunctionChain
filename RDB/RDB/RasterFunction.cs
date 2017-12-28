@@ -29,15 +29,12 @@ using ESRI.ArcGIS.Analyst3D;
 
 namespace RDB
 {
-    class RasterFunction
+    static class RasterFunction
     {
-        public string name;
-        public string description;
-
         public static ILayer Convolution(ILayer layer, int type, string outputRaster)
         {
             try
-            {               
+            {
                 IRasterLayer rstLayer = layer as IRasterLayer;
                 IRaster raster = rstLayer.Raster;
 
