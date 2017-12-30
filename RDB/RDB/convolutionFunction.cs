@@ -34,6 +34,8 @@ namespace RDB
     {
         XmlNode m_xmlNode;
         IRaster m_raster;
+        string inputRaster = null, outputRaster = null;
+        int type = -1;
         
         public convolutionFunction(XmlNode node)
         {
@@ -51,9 +53,7 @@ namespace RDB
         }
 
         private void initial(){
-            XmlNodeList xnl0 = m_xmlNode.ChildNodes;
-            string inputRaster = null, outputRaster = null;
-            int type = -1;
+            XmlNodeList xnl0 = m_xmlNode.ChildNodes;            
             foreach (XmlNode xn2 in xnl0)
             {
                 if (xn2 is XmlComment)
@@ -127,6 +127,37 @@ namespace RDB
         public IRaster GetRaster()
         {
             return m_raster;
+        }
+
+        public IRaster Init()         
+        {
+            try
+            {
+                IConvolutionFunctionArguments rasterFunctionArguments = (IConvolutionFunctionArguments)new ConvolutionFunctionArguments();
+
+                //设置输入栅格数据
+                rasterFunctionArguments.Raster = m_raster;
+                rasterFunctionArguments.Type = (esriRasterFilterTypeEnum)type;
+                //创建Raster Function对象
+                IRasterFunction rasterFunction = new ConvolutionFunction();
+                IFunctionRasterDataset functionRasterDataset = new FunctionRasterDataset();
+                IFunctionRasterDatasetName functionRasterDatasetName = (IFunctionRasterDatasetName)new FunctionRasterDatasetNameClass();
+                functionRasterDatasetName.FullName = @"D:\\RDB" + "\\" + outputRaster;
+                functionRasterDataset.FullName = (IName)functionRasterDatasetName;
+                functionRasterDataset.Init(rasterFunction, rasterFunctionArguments);
+
+                IRasterDataset rasData = functionRasterDataset as IRasterDataset;
+                IRasterLayer pRstLayer = new RasterLayerClass();
+                pRstLayer.CreateFromDataset(rasData);
+
+                IRaster iRaster = pRstLayer.Raster;
+                return iRaster;
+            }
+            catch (System.Exception ex)//异常处理，输出错误信息
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
     }
 }

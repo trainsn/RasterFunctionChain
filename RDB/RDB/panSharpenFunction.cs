@@ -34,6 +34,9 @@ namespace RDB
     {
         XmlNode m_xmlNode;
         IRaster m_raster;
+        double red = 0, green = 0, blue = 0, infra = 0;
+        string panImage = null, MSImage = null, outputRaster = null;
+        int type = -1;
         
         public panSharpenFunction(XmlNode node)
         {
@@ -53,9 +56,6 @@ namespace RDB
         private void initial()
         {           
             XmlNodeList xnl0 = m_xmlNode.ChildNodes;
-            double red=0, green=0, blue=0, infra=0;
-            string panImage = null, MSImage = null, outputRaster = null;
-            int type = -1;
             foreach (XmlNode xn2 in xnl0)
             {
                 if (xn2 is XmlComment)
@@ -89,7 +89,6 @@ namespace RDB
                 }
             }
             cmb_PanSharpenMultiLayer.Items.Add(MSImage);
-            if (cmb_PanSharpenSigleLayer.Items.Count > 0) cmb_PanSharpenSigleLayer.SelectedIndex = 0;
             if (cmb_PanSharpenMultiLayer.Items.Count > 0) cmb_PanSharpenMultiLayer.SelectedIndex = 0;
 
             //添加滤波方法
@@ -110,7 +109,7 @@ namespace RDB
             XmlElement xe = (XmlElement)m_xmlNode;
             xe.SetAttribute("name", "Pansharpening Function");
             xe.SetAttribute("description", "Enhances the spatial resolution of a multiband image by fusing it with a higher-resolution panchromatic image.");
-            xe.GetElementsByTagName("PanImage").Item(0).InnerText = cmb_PanSharpenSigleLayer.SelectedItem.ToString();
+            xe.GetElementsByTagName("PanImage").Item(0).InnerText = txb_single.Text;
             xe.GetElementsByTagName("MSImage").Item(0).InnerText = cmb_PanSharpenMultiLayer.SelectedItem.ToString();
             xe.GetElementsByTagName("PansharpeningType").Item(0).InnerText = cmb_PanMethod.SelectedIndex.ToString();
             xe.GetElementsByTagName("Red").Item(0).InnerText = txb_red.Text;
@@ -130,6 +129,89 @@ namespace RDB
         public IRaster GetRaster()
         {
             return m_raster;
+        }
+
+        public IRaster Init()
+        {
+            try
+            {
+                //根据选择的矢量文件的路径打开工作空间
+                string fileN = panImage;
+                FileInfo fileInfo = new FileInfo(fileN);
+                string filePath = fileInfo.DirectoryName;
+                string fileName = fileInfo.Name;
+
+                IWorkspaceFactory wsf = new ShapefileWorkspaceFactory();
+                IWorkspace wp = wsf.OpenFromFile(filePath, 0);
+                IRasterWorkspace rw = (IRasterWorkspace)wp;
+                IRasterDataset panDataset = rw.OpenRasterDataset(fileName);
+
+                IRaster2 multiRaster2 = m_raster as IRaster2;                
+                IRasterDataset multiDataset = multiRaster2.RasterDataset;
+                //默认波段顺序，RGB和近红外
+                //创建全色和多光谱栅格数据集的full栅格对象
+                IRaster panRaster = ((IRasterDataset2)panDataset).CreateFullRaster();
+                IRaster multiRaster = ((IRasterDataset2)multiDataset).CreateFullRaster();
+                //设置红外波段
+                IRasterBandCollection rasterbandCol = (IRasterBandCollection)multiRaster;
+                IRasterBandCollection infredRaster = new RasterClass();
+                infredRaster.AppendBand(rasterbandCol.Item(3));
+
+                //设置全色波段的属性
+                IRasterProps panSharpenRasterProps = (IRasterProps)multiRaster;
+                IRasterProps panRasterProps = (IRasterProps)panRaster;
+                panSharpenRasterProps.Width = panRasterProps.Width;
+                panSharpenRasterProps.Height = panRasterProps.Height;
+                panSharpenRasterProps.Extent = panRasterProps.Extent;
+                multiRaster.ResampleMethod = rstResamplingTypes.RSP_BilinearInterpolationPlus;
+
+                //创建全色锐化过滤器和设置其参数
+                IPansharpeningFilter pansharpenFilter = new PansharpeningFilterClass();
+                pansharpenFilter.InfraredImage = (IRaster)infredRaster;
+                pansharpenFilter.PanImage = (IRaster)panRaster;
+                pansharpenFilter.PansharpeningType = esriPansharpeningType.esriPansharpeningESRI;
+                pansharpenFilter.PutWeights(0.1, 0.167, 0.167, 0.5);
+
+                //将全色锐化过滤器设置于多光谱栅格对象上
+                IPixelOperation pixeOperation = (IPixelOperation)multiRaster;
+                pixeOperation.PixelFilter = (IPixelFilter)pansharpenFilter;
+
+                //保存结果数据集，并加载显示
+                //加载显示裁剪结果图像
+                /*IRasterLayer panSharpenLayer = new RasterLayerClass();
+                panSharpenLayer.CreateFromRaster(multiRaster);
+                panSharpenLayer.Name = "panSharpen_Result";
+                panSharpenLayer.SpatialReference = ((IGeoDataset)multiRaster).SpatialReference;
+                return panSharpenLayer;*/
+                return multiRaster;
+            }
+            catch (System.Exception ex)//异常处理，输出错误信息
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+        private void txb_single_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                //打开文件选择对话框，设置对话框属性
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Title = "选择栅格文件";
+                openFileDialog.Multiselect = false;
+                string fileName = "";
+                //如果对话框已成功选择文件，将文件路径信息填写到输入框里
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    fileName = openFileDialog.FileName;
+                    txb_single.Text = fileName;
+                }
+            }
+            catch (System.Exception ex)//异常处理，输出错误信息
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

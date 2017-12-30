@@ -2412,8 +2412,7 @@ namespace RDB
 
                 IRasterDataset rasData = functionRasterDataset as IRasterDataset;
                 IRasterLayer pRstLayer = new RasterLayerClass();
-                pRstLayer.CreateFromDataset(rasData);
-
+                pRstLayer.CreateFromDataset(rasData); 
                 ILayer iLayer = pRstLayer as ILayer;
                 axMapControl1.AddLayer(iLayer);
                 axMapControl1.ActiveView.Refresh();
