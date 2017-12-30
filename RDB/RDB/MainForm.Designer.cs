@@ -191,6 +191,8 @@ namespace RDB
             this.Btn_ConnectDB = new System.Windows.Forms.ToolStripMenuItem();
             this.xMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.readXMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pansharpingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.axMapControl1 = new ESRI.ArcGIS.Controls.AxMapControl();
             this.axToolbarControl1 = new ESRI.ArcGIS.Controls.AxToolbarControl();
             this.axTOCControl1 = new ESRI.ArcGIS.Controls.AxTOCControl();
@@ -205,8 +207,7 @@ namespace RDB
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.TSMI_ZoomToLayer = new System.Windows.Forms.ToolStripMenuItem();
             this.TSMI_DeleteLayer = new System.Windows.Forms.ToolStripMenuItem();
-            this.convolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pansharpingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btn_Filter_Bottom = new System.Windows.Forms.Button();
             tbc_ImageAnalysis = new System.Windows.Forms.TabControl();
             tbc_ImageAnalysis.SuspendLayout();
             this.tbP_DataManagement.SuspendLayout();
@@ -1117,6 +1118,7 @@ namespace RDB
             // 
             // grb_Filter
             // 
+            this.grb_Filter.Controls.Add(this.btn_Filter_Bottom);
             this.grb_Filter.Controls.Add(this.cmb_FliterMethod);
             this.grb_Filter.Controls.Add(this.textBox27);
             this.grb_Filter.Controls.Add(this.btn_Filter);
@@ -1156,7 +1158,7 @@ namespace RDB
             // btn_Filter
             // 
             this.btn_Filter.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.btn_Filter.Location = new System.Drawing.Point(144, 33);
+            this.btn_Filter.Location = new System.Drawing.Point(154, 19);
             this.btn_Filter.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Filter.Name = "btn_Filter";
             this.btn_Filter.Size = new System.Drawing.Size(50, 22);
@@ -2071,9 +2073,23 @@ namespace RDB
             // readXMLToolStripMenuItem
             // 
             this.readXMLToolStripMenuItem.Name = "readXMLToolStripMenuItem";
-            this.readXMLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.readXMLToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.readXMLToolStripMenuItem.Text = "ReadXML";
             this.readXMLToolStripMenuItem.Click += new System.EventHandler(this.Btn_ReadXML_Click);
+            // 
+            // convolutionToolStripMenuItem
+            // 
+            this.convolutionToolStripMenuItem.Name = "convolutionToolStripMenuItem";
+            this.convolutionToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.convolutionToolStripMenuItem.Text = "Convolution";
+            this.convolutionToolStripMenuItem.Click += new System.EventHandler(this.convolutionToolStripMenuItem_Click);
+            // 
+            // pansharpingToolStripMenuItem
+            // 
+            this.pansharpingToolStripMenuItem.Name = "pansharpingToolStripMenuItem";
+            this.pansharpingToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.pansharpingToolStripMenuItem.Text = "Pansharping";
+            this.pansharpingToolStripMenuItem.Click += new System.EventHandler(this.pansharpingToolStripMenuItem_Click);
             // 
             // axMapControl1
             // 
@@ -2172,19 +2188,17 @@ namespace RDB
             this.TSMI_DeleteLayer.Text = "É¾³ýµ±Ç°Í¼²ã";
             this.TSMI_DeleteLayer.Click += new System.EventHandler(this.TSMI_DeleteLayer_Click);
             // 
-            // convolutionToolStripMenuItem
+            // btn_Filter_Bottom
             // 
-            this.convolutionToolStripMenuItem.Name = "convolutionToolStripMenuItem";
-            this.convolutionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.convolutionToolStripMenuItem.Text = "Convolution";
-            this.convolutionToolStripMenuItem.Click += new System.EventHandler(this.convolutionToolStripMenuItem_Click);
-            // 
-            // pansharpingToolStripMenuItem
-            // 
-            this.pansharpingToolStripMenuItem.Name = "pansharpingToolStripMenuItem";
-            this.pansharpingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.pansharpingToolStripMenuItem.Text = "Pansharping";
-            this.pansharpingToolStripMenuItem.Click += new System.EventHandler(this.pansharpingToolStripMenuItem_Click);
+            this.btn_Filter_Bottom.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.btn_Filter_Bottom.Location = new System.Drawing.Point(154, 45);
+            this.btn_Filter_Bottom.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Filter_Bottom.Name = "btn_Filter_Bottom";
+            this.btn_Filter_Bottom.Size = new System.Drawing.Size(50, 22);
+            this.btn_Filter_Bottom.TabIndex = 16;
+            this.btn_Filter_Bottom.Text = "µ×²ã";
+            this.btn_Filter_Bottom.UseVisualStyleBackColor = true;
+            this.btn_Filter_Bottom.Click += new System.EventHandler(this.btn_Filter_Bottom_Click);
             // 
             // MainForm
             // 
@@ -2442,6 +2456,7 @@ namespace RDB
         private System.Windows.Forms.ToolStripMenuItem readXMLToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem convolutionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pansharpingToolStripMenuItem;
+        private System.Windows.Forms.Button btn_Filter_Bottom;
     }
 }
 

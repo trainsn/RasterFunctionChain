@@ -30,29 +30,51 @@ using ESRI.ArcGIS.Analyst3D;
 
 namespace RDB
 {
-    public partial class ConvolutionFunc : Form
+    public partial class convolutionFunction : Form
     {
-        public string name;
-        public string description;     
+        XmlNode m_xmlNode;
+        IRaster m_raster;
         
-        public ConvolutionFunc(IMap map)
+        public convolutionFunction(XmlNode node)
         {
             InitializeComponent();
-            this.name = "Convolution";
-            this.description = "Performs filtering on the pixel values in a raster, which can be used for sharpening an image, blurring an image, detecting edges within an image, or other kernel-based enhancements.";
+            m_xmlNode = node;
+            initial();
+        }
 
-            ILayer layer;
-            int count = map.LayerCount;
-            if (count > 0)
+        public convolutionFunction(IRaster raster, XmlNode node)
+        {
+            InitializeComponent();
+            m_xmlNode = node;
+            m_raster = raster;
+            initial();
+        }
+
+        private void initial(){
+            XmlNodeList xnl0 = m_xmlNode.ChildNodes;
+            string inputRaster = null, outputRaster = null;
+            int type = -1;
+            foreach (XmlNode xn2 in xnl0)
             {
-                //遍历地图的所有图层，获取图层的名字加入下拉框
-                for (int i = 0; i < count; i++)
+                if (xn2 is XmlComment)
+                    continue;
+                switch (xn2.Name)
                 {
-                    layer = map.get_Layer(i);
-                    cmb_FliterLayer.Items.Add(layer.Name);
+                    case "Raster":
+                        inputRaster = xn2.InnerText;
+                        break;
+                    case "Type":
+                        type = Convert.ToInt16(xn2.InnerText);
+                        cmb_FliterMethod.SelectedIndex = type; 
+                        break;
+                    case "Output":
+                        outputRaster = xnl0.Item(3).InnerText;
+                        break;
                 }
             }
-            if (cmb_FliterLayer.Items.Count > 0) cmb_FliterLayer.SelectedIndex = 0;
+
+            cmb_FilterLayer.Items.Add(inputRaster);
+            if (cmb_FilterLayer.Items.Count > 0) cmb_FilterLayer.SelectedIndex = 0;
 
             //添加滤波方法
             cmb_FliterMethod.Items.Add("LineDetectionHorizontal");
@@ -87,39 +109,24 @@ namespace RDB
 
         private void button1_Click(object sender, EventArgs e)
         {
-            XmlDocument doc = new XmlDocument();
-            doc.Load(@"D:\\RDB\\Raster_Function_Template.xml");
-            XmlNode root = doc.SelectSingleNode("XmlRasterFunctionTemplate");
-
-            XmlElement xelKey = doc.CreateElement("Function");
-            XmlAttribute xelName = doc.CreateAttribute("name");
-            xelName.InnerText = name;
-            xelKey.SetAttributeNode(xelName);
-
-            XmlAttribute xelDesp = doc.CreateAttribute("description");
-            xelDesp.InnerText = description;
-            xelKey.SetAttributeNode(xelDesp);
-            
-            XmlElement xelRaster = doc.CreateElement("Raster");
-            xelRaster.InnerText = cmb_FliterLayer.SelectedItem.ToString();
-            xelKey.AppendChild(xelRaster);
-
-            XmlElement xelType = doc.CreateElement("Type");
-            xelType.InnerText = cmb_FliterMethod.SelectedIndex.ToString();
-            xelKey.AppendChild(xelType);
-
-            XmlElement xelSave = doc.CreateElement("Save");
-            xelSave.InnerText = "1";
-            xelKey.AppendChild(xelSave);
-
-            XmlElement xelOutput = doc.CreateElement("Output");
-            xelOutput.InnerText = cmb_FliterLayer.SelectedItem.ToString()+"_conv";
-            xelKey.AppendChild(xelOutput);
-
-            root.AppendChild(xelKey);
-            doc.Save(@"D:\\RDB\\Raster_Function_Template.xml");
+            XmlElement xe = (XmlElement)m_xmlNode;
+            xe.SetAttribute("name", "Convolution Function");
+            xe.SetAttribute("description", "Performs filtering on the pixel values in a raster, which can be used for sharpening an image, blurring an image, detecting edges within an image, or other kernel-based enhancements.");
+            xe.GetElementsByTagName("Raster").Item(0).InnerText = cmb_FilterLayer.SelectedItem.ToString();
+            xe.GetElementsByTagName("Type").Item(0).InnerText = cmb_FliterMethod.SelectedItem.ToString();
+            xe.GetElementsByTagName("Output").Item(0).InnerText = cmb_FilterLayer.SelectedItem.ToString() + "_conv";
+            m_xmlNode = (XmlNode)xe;
             this.Close();
         }
 
+        public XmlNode GetXMLNode()
+        {
+            return m_xmlNode;
+        }
+
+        public IRaster GetRaster()
+        {
+            return m_raster;
+        }
     }
 }

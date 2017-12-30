@@ -1,6 +1,6 @@
 ﻿namespace RDB
 {
-    partial class PansharpingFunc
+    partial class panSharpenFunction
     {
         /// <summary>
         /// Required designer variable.

@@ -277,11 +277,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvolutionFunc.cs">
+    <Compile Include="convolutionFunction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConvolutionFunc.Designer.cs">
-      <DependentUpon>ConvolutionFunc.cs</DependentUpon>
+    <Compile Include="convolutionFunction.Designer.cs">
+      <DependentUpon>convolutionFunction.cs</DependentUpon>
     </Compile>
     <Compile Include="CreateNewDocument.cs" />
     <Compile Include="HistogramCompareForm.cs">
@@ -306,11 +306,11 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PansharpingFunc.cs">
+    <Compile Include="panSharpenFunction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PansharpingFunc.Designer.cs">
-      <DependentUpon>PansharpingFunc.cs</DependentUpon>
+    <Compile Include="panSharpenFunction.Designer.cs">
+      <DependentUpon>panSharpenFunction.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -321,8 +321,8 @@
     <Compile Include="SelectBandsForm.Designer.cs">
       <DependentUpon>SelectBandsForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ConvolutionFunc.resx">
-      <DependentUpon>ConvolutionFunc.cs</DependentUpon>
+    <EmbeddedResource Include="convolutionFunction.resx">
+      <DependentUpon>convolutionFunction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HistogramCompareForm.resx">
       <DependentUpon>HistogramCompareForm.cs</DependentUpon>
@@ -334,8 +334,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PansharpingFunc.resx">
-      <DependentUpon>PansharpingFunc.cs</DependentUpon>
+    <EmbeddedResource Include="panSharpenFunction.resx">
+      <DependentUpon>panSharpenFunction.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
