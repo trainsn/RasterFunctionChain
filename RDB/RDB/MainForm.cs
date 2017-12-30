@@ -3439,13 +3439,75 @@ namespace RDB
 
         private void convolutionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            convolutionFunction conv = new convolutionFunction(null);
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"D:\\RDB\\Raster_Function_Template.xml");
+            XmlNode root = doc.SelectSingleNode("XmlRasterFunctionTemplate");
+
+            XmlElement xelKey = doc.CreateElement("Function");
+            XmlAttribute xelName = doc.CreateAttribute("name");
+            xelName.InnerText = "Convolution";
+            xelKey.SetAttributeNode(xelName);
+
+            XmlAttribute xelDesp = doc.CreateAttribute("description");
+            xelDesp.InnerText = "Performs filtering on the pixel values in a raster, which can be used for sharpening an image, blurring an image, detecting edges within an image, or other kernel-based enhancements.";
+            xelKey.SetAttributeNode(xelDesp);
+
+            XmlElement xelType = doc.CreateElement("Type");
+            xelType.InnerText = "0";
+            xelKey.AppendChild(xelType);
+
+            XmlElement xelOutput = doc.CreateElement("Output");
+            xelOutput.InnerText = "_conv";
+            xelKey.AppendChild(xelOutput);
+
+            convolutionFunction conv = new convolutionFunction((XmlNode)xelKey);
             conv.ShowDialog();
         }
 
         private void pansharpingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            panSharpenFunction pansharping = new panSharpenFunction(null);
+            XmlDocument doc = new XmlDocument();
+            doc.Load(@"D:\\RDB\\Raster_Function_Template.xml");
+            XmlNode root = doc.SelectSingleNode("XmlRasterFunctionTemplate");
+
+            XmlElement xelKey = doc.CreateElement("Function");
+            XmlAttribute xelName = doc.CreateAttribute("name");
+            xelName.InnerText = "Pansharpening";
+            xelKey.SetAttributeNode(xelName);
+
+            XmlAttribute xelDesp = doc.CreateAttribute("description");
+            xelDesp.InnerText = "Enhances the spatial resolution of a multiband image by fusing it with a higher-resolution panchromatic image.";
+            xelKey.SetAttributeNode(xelDesp);
+
+            XmlElement xelPanImage = doc.CreateElement("PanImage");
+            xelPanImage.InnerText = "default";
+            xelKey.AppendChild(xelPanImage);
+
+            XmlElement xelType = doc.CreateElement("PansharpeningType");
+            xelType.InnerText = "0";
+            xelKey.AppendChild(xelType);
+
+            XmlElement xelRed = doc.CreateElement("Red");
+            xelRed.InnerText = "0.166";
+            xelKey.AppendChild(xelRed);
+
+            XmlElement xelGreen = doc.CreateElement("Green");
+            xelGreen.InnerText = "0.166";
+            xelKey.AppendChild(xelGreen);
+
+            XmlElement xelBlue = doc.CreateElement("Blue");
+            xelBlue.InnerText = "0.166";
+            xelKey.AppendChild(xelBlue);
+
+            XmlElement xelIR = doc.CreateElement("Infra");
+            xelIR.InnerText = "0.5";
+            xelKey.AppendChild(xelIR);
+
+            XmlElement xelOutput = doc.CreateElement("Output");
+            xelOutput.InnerText = "_pansharpen";
+            xelKey.AppendChild(xelOutput);
+
+            panSharpenFunction pansharping = new panSharpenFunction((XmlNode)xelKey);
             pansharping.ShowDialog();
         }
 

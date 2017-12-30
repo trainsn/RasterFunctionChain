@@ -88,7 +88,7 @@ namespace RDB
                         break;
                 }
             }
-            cmb_PanSharpenMultiLayer.Items.Add(MSImage);
+            cmb_PanSharpenMultiLayer.Items.Add("test");
             if (cmb_PanSharpenMultiLayer.Items.Count > 0) cmb_PanSharpenMultiLayer.SelectedIndex = 0;
 
             //添加滤波方法
@@ -110,7 +110,6 @@ namespace RDB
             xe.SetAttribute("name", "Pansharpening Function");
             xe.SetAttribute("description", "Enhances the spatial resolution of a multiband image by fusing it with a higher-resolution panchromatic image.");
             xe.GetElementsByTagName("PanImage").Item(0).InnerText = txb_single.Text;
-            xe.GetElementsByTagName("MSImage").Item(0).InnerText = cmb_PanSharpenMultiLayer.SelectedItem.ToString();
             xe.GetElementsByTagName("PansharpeningType").Item(0).InnerText = cmb_PanMethod.SelectedIndex.ToString();
             xe.GetElementsByTagName("Red").Item(0).InnerText = txb_red.Text;
             xe.GetElementsByTagName("Green").Item(0).InnerText = txb_green.Text;

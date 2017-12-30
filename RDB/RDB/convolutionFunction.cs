@@ -65,15 +65,14 @@ namespace RDB
                         break;
                     case "Type":
                         type = Convert.ToInt16(xn2.InnerText);
-                        cmb_FliterMethod.SelectedIndex = type; 
                         break;
                     case "Output":
-                        outputRaster = xnl0.Item(3).InnerText;
+                        outputRaster =xn2.InnerText;
                         break;
                 }
             }
 
-            cmb_FilterLayer.Items.Add(inputRaster);
+           cmb_FilterLayer.Items.Add("test");
             if (cmb_FilterLayer.Items.Count > 0) cmb_FilterLayer.SelectedIndex = 0;
 
             //添加滤波方法
@@ -112,9 +111,8 @@ namespace RDB
             XmlElement xe = (XmlElement)m_xmlNode;
             xe.SetAttribute("name", "Convolution Function");
             xe.SetAttribute("description", "Performs filtering on the pixel values in a raster, which can be used for sharpening an image, blurring an image, detecting edges within an image, or other kernel-based enhancements.");
-            xe.GetElementsByTagName("Raster").Item(0).InnerText = cmb_FilterLayer.SelectedItem.ToString();
-            xe.GetElementsByTagName("Type").Item(0).InnerText = cmb_FliterMethod.SelectedItem.ToString();
-            xe.GetElementsByTagName("Output").Item(0).InnerText = cmb_FilterLayer.SelectedItem.ToString() + "_conv";
+            xe.GetElementsByTagName("Type").Item(0).InnerText = cmb_FliterMethod.SelectedIndex.ToString();
+            xe.GetElementsByTagName("Output").Item(0).InnerText = "_conv";
             m_xmlNode = (XmlNode)xe;
             this.Close();
         }
