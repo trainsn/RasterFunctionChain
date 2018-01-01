@@ -1,5 +1,3 @@
 # RS
 
-根目录下放了一个Raster_Function_Template.xml，现在实现了那个xml中的栅格函数链。
-在MainForm里面添加了一个ReadXML函数。
-新建了一个类RasterFunction，两个变量name和description。剩下通过静态成员函数的方法实现栅格函数功能。
+遥感数据库大程——栅格函数链
