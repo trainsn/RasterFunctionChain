@@ -155,5 +155,118 @@ namespace RDB
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        public void underInit() {
+            IRaster2 raster2 = m_raster as IRaster2;
+            IRasterDataset rstDataset = raster2.RasterDataset;
+            IRasterBandCollection rstBandColl = rstDataset as IRasterBandCollection;
+            if (rstBandColl.Count > 1)
+            {
+                MessageBox.Show("暂不支持多波段的滤波计算", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            IRasterProps pRasterProps = raster2 as IRasterProps;
+            int Height = pRasterProps.Height;
+            int Width = pRasterProps.Width;
+            double cellsizex = pRasterProps.MeanCellSize().X;
+
+            double cellsizey = pRasterProps.MeanCellSize().Y;
+            rstPixelType pixelType = pRasterProps.PixelType;
+            ISpatialReference spatialReference = pRasterProps.SpatialReference;
+            //MessageBox.Show(spatialReference.Name.ToString());
+            IWorkspaceFactory pRasterWsFac = new RasterWorkspaceFactoryClass();
+            IWorkspace pWs = pRasterWsFac.OpenFromFile(@"D://RDB", 0);
+            IRasterWorkspace2 pRasterWs;
+            pRasterWs = pWs as IRasterWorkspace2;
+            IPoint origin = new PointClass();
+            origin.PutCoords(pRasterProps.Extent.XMin, pRasterProps.Extent.YMin);
+            //RasterWorkspace rasterWorkspace = (RasterWorkspace)workspace;
+            ISpatialReference sr = new UnknownCoordinateSystemClass();
+            IRasterDataset2 resultDataset = pRasterWs.CreateRasterDataset("raster" + "_" + cmb_FliterMethod.SelectedItem.ToString() + ".tif", "TIFF", origin, Width, Height, cellsizex, cellsizey, 1, rstPixelType.PT_DOUBLE, sr) as IRasterDataset2;
+            IRaster resultRaster = resultDataset.CreateFullRaster();
+            IRasterCursor resultRasterCursor = ((IRaster2)resultRaster).CreateCursorEx(null);
+
+            IRasterDataset2 rasterDataset = raster2.RasterDataset as IRasterDataset2;
+            IRaster2 raster = rasterDataset.CreateFullRaster() as IRaster2;
+            IRasterCursor rasterCursor = raster.CreateCursorEx(null);
+
+            IPixelBlock3 resultPixelBlock = null;
+            IPixelBlock3 tempPixelBlock = null;
+            IRasterEdit resultRasterEdit = resultRaster as IRasterEdit;
+
+            long blockWidth = 0;
+            long blockHeight = 0;
+            // System.Array pixels;
+            double[,] kernal = new double[3, 3]{{0,0,0},
+                                                        {0,1,0},
+                                                        {0,0,0}};
+            switch (cmb_FliterMethod.SelectedItem.ToString())
+            {
+                case "LineDetectionHorizontal":
+                    kernal = new double[3, 3]{{-1,-1,-1},
+                                                        {2,2,2},
+                                                        {-1,-1,-1}};
+                    break;
+                case "LineDetectionVertical":
+                    kernal = new double[3, 3]{{-1,2,-1},
+                                                        {-1,2,-1},
+                                                        {-1,2,-1}};
+                    break;
+                case "Laplacian3x3":
+                    kernal = new double[3, 3]{{0,-1,0},
+                                                        {-1,4,-1},
+                                                        {0,-1,0}};
+                    break;
+                case "Smoothing3x3":
+                    kernal = new double[3, 3]{{1,2,1},
+                                                        {2,4,2},
+                                                        {1,2,1}};
+                    break;
+                case "Sharpening3x3":
+                    kernal = new double[3, 3]{{-1,-1,-1},
+                                                        {-1,9,-1},
+                                                        {-1,-1,-1}};
+                    break;
+            }
+            do
+            {
+                resultPixelBlock = resultRasterCursor.PixelBlock as IPixelBlock3;
+                tempPixelBlock = rasterCursor.PixelBlock as IPixelBlock3;
+
+                System.Array pixels = (System.Array)tempPixelBlock.get_PixelData(0);
+                //MessageBox.Show(pixels3.GetValue(0, 0).GetType().ToString());
+                blockHeight = resultPixelBlock.Height;
+                blockWidth = resultPixelBlock.Width;
+                System.Array resultPixels = (System.Array)resultPixelBlock.get_PixelData(0);
+                //MessageBox.Show(resultPixels.GetValue(0, 0).GetType().ToString());
+                for (int i = 0; i < blockHeight; i++)
+                {
+                    for (int j = 0; j < blockWidth; j++)
+                    {
+                        double sum = 0;
+                        for (int ki = -1; ki <= 1; ki++)
+                        {
+                            for (int kj = -1; kj <= 1; kj++)
+                            {
+                                long idxi = (i + ki) < 0 ? 0 : i + ki >= blockHeight ? blockHeight - 1 : (i + ki);
+                                long idxj = (j + kj) < 0 ? 0 : j + kj >= blockWidth ? blockWidth - 1 : (j + kj);
+                                double raw = double.Parse(pixels.GetValue(idxj, idxi).ToString());
+                                sum += raw * kernal[ki + 1, kj + 1];
+                            }
+                        }
+                        resultPixels.SetValue(sum, j, i);
+                    }
+                }
+                resultPixelBlock.set_PixelData(0, (System.Array)resultPixels);
+                resultRasterEdit.Write(resultRasterCursor.TopLeft, (IPixelBlock)resultPixelBlock);
+                resultRasterEdit.Refresh();
+            } while (resultRasterCursor.Next() == true && rasterCursor.Next() == true);
+            IRasterDataset pRasterDs = pRasterWs.OpenRasterDataset("raster" + "_" + cmb_FliterMethod.SelectedItem.ToString() + ".tif");
+            IRaster praster = pRasterDs.CreateDefaultRaster();
+
+            IRasterLayer resLayer = new RasterLayerClass();
+            resLayer.CreateFromRaster(praster);
+            m_raster = resLayer.Raster;
+        }
     }
 }

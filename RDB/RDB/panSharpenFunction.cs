@@ -203,7 +203,8 @@ namespace RDB
             {
                 //打开文件选择对话框，设置对话框属性
                 OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = "选择栅格文件";
+                openFileDialog.Filter = "Imag file (*.img)|*img|Tiff file(*.tif)|*.tif|Openflight file (*.flt)|*.flt";
+                openFileDialog.Title = "打开影像数据";
                 openFileDialog.Multiselect = false;
                 string fileName = "";
                 //如果对话框已成功选择文件，将文件路径信息填写到输入框里

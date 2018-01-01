@@ -215,13 +215,13 @@ namespace RDB
             {
                 //SDE连接数据库参数设置
                 IPropertySet propertySet = new PropertySet();
-                propertySet.SetProperty("SERVER", "localhost");
-                propertySet.SetProperty("INSTANCE", "sde:oracle11g:localhost/orcl");
-                propertySet.SetProperty("DATABASE", "sde1363");
+                propertySet.SetProperty("SERVER", "es27");
+                propertySet.SetProperty("INSTANCE", "sde:oracle11g:es27/orcl");
+                propertySet.SetProperty("DATABASE", "sde");
                 propertySet.SetProperty("USER", "sde");
-                propertySet.SetProperty("PASSWORD", "sde");
-                propertySet.SetProperty("VSESION", "sde.DEFAULT");
-                propertySet.SetProperty("AUTHENTICATION_MODE", "DBMS");
+                propertySet.SetProperty("PASSWORD", "123");
+                propertySet.SetProperty("VERSION", "sde.DEFAULT");
+                propertySet.SetProperty("AUTHENTICATION_MORE", "DBMS");
 
                 //指定SDE工作空间factory
                 Type factoryType = Type.GetTypeFromProgID("esriDataSourcesGDB.SdeWorkspaceFactory");

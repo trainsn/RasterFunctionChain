@@ -644,7 +644,7 @@ namespace RDB
                              case "Convolution":
                                  {
                                      convolutionFunction convolutionFunction = new convolutionFunction(m_raster,xn1);
-                                     convolutionFunction.Init();
+                                     convolutionFunction.underInit();
                                      m_raster = convolutionFunction.GetRaster();
                                      break;
                                  }
