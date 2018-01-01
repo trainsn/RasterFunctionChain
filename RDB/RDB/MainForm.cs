@@ -23,6 +23,7 @@ using ESRI.ArcGIS.DataSourcesFile;
 using ESRI.ArcGIS.Geoprocessor;
 using ESRI.ArcGIS.DataManagementTools;
 using ESRI.ArcGIS.Analyst3D;
+using System.Xml.Linq;
 
 namespace RDB
 {
@@ -3192,7 +3193,6 @@ namespace RDB
                 pRasterWs = pWs as IRasterWorkspace2;
                 IPoint origin = new PointClass();
                 origin.PutCoords(pRasterProps.Extent.XMin, pRasterProps.Extent.YMin);
-                //RasterWorkspace rasterWorkspace = (RasterWorkspace)workspace;
                 ISpatialReference sr = new UnknownCoordinateSystemClass();
                 IRasterDataset2 resultDataset = pRasterWs.CreateRasterDataset("NDVI.tif", "TIFF", origin, Width, Height, cellsizex, cellsizey, 1, rstPixelType.PT_DOUBLE, sr) as IRasterDataset2;
                 IRaster resultRaster = resultDataset.CreateFullRaster();
@@ -3240,7 +3240,7 @@ namespace RDB
                      resultPixelBlock.set_PixelData(0, (System.Array)resultPixels);
                      resultRasterEdit.Write(resultRasterCursor.TopLeft, (IPixelBlock)resultPixelBlock);
                      resultRasterEdit.Refresh();
-
+                     
                 } while (resultRasterCursor.Next() == true && rasterCursor.Next() == true);
 
                 IRasterDataset pRasterDs = pRasterWs.OpenRasterDataset("NDVI.tif");
@@ -3264,6 +3264,7 @@ namespace RDB
                 axMapControl1.ActiveView.Extent = resLayer.AreaOfInterest;
                 axMapControl1.ActiveView.Refresh();
                 this.axTOCControl1.Update();
+                iniCmbItems();
             }
             catch (Exception ex)
             {
@@ -3310,6 +3311,68 @@ namespace RDB
 
             return PixelValue;
         }
+
+        private void nDVItestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ILayer layer = axMapControl1.Map.get_Layer(0);
+            IRaster2 raster2 = ((IRasterLayer)layer).Raster as IRaster2;
+            IRasterDataset2 rasterDataset = raster2.RasterDataset as IRasterDataset2;
+            IRaster raster = rasterDataset.CreateFullRaster();
+
+            ndviFunction NDVI = new ndviFunction(raster);
+            NDVI.ShowDialog();
+
+            IRasterLayer rasterLayer = new RasterLayer();
+            rasterLayer.CreateFromRaster((IRaster)NDVI.GetRaster());
+            axMapControl1.AddLayer(rasterLayer);
+
+            //XDocument document = new XDocument();
+            //XElement root = new XElement("RasterFunctionTemplate");
+            //XElement ndvi = new XElement("NDVI");
+            //ndvi.SetElementValue("Raster", layer.Name.ToString());
+            //ndvi.SetElementValue("InfraredBandID", 3);
+            //ndvi.SetElementValue("VisibleBandID", 2);
+            //root.Add(ndvi);
+            //root.Save("f:\\ndvi_test.rft.xml");
+        }
+
+        private void stretchtestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ILayer layer = axMapControl1.Map.get_Layer(0);
+                IRaster2 raster2 = ((IRasterLayer)layer).Raster as IRaster2;
+                IRasterDataset2 rasterDataset = raster2.RasterDataset as IRasterDataset2;
+                IRaster raster = rasterDataset.CreateFullRaster();
+                stretchFunction Stretch = new stretchFunction(raster);
+                Stretch.ShowDialog();
+                IRasterLayer rasterLayer = new RasterLayer();
+                rasterLayer.CreateFromRaster((IRaster)Stretch.GetRaster());
+                axMapControl1.AddLayer(rasterLayer);
+
+                //XDocument document = new XDocument();
+                //XElement root = new XElement("RasterFunctionTemplate");
+                //XElement stretch = new XElement("STRETCH");
+                //stretch.SetElementValue("Raster", layer.Name.ToString());
+                //stretch.SetElementValue("StretchType", 3);
+                //stretch.SetElementValue("MinPercent", 2);
+                //stretch.SetElementValue("MaxPercent", 2);
+                //stretch.SetElementValue("NumberOfStandardDeviations", 5);
+                //root.Add(stretch);
+                //root.Save("f:\\stretch_test.rft.xml");
+            }
+            catch (System.Exception ex)//异常处理，输出错误信息
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            stretchFunction test = new stretchFunction();
+            test.ShowDialog();
+        }
+
 
     }
 }

@@ -9,3 +9,17 @@ c:\users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug
 C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.HistogramForm.resources
 C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.SelectBandsForm.resources
 C:\Users\surfacebook\documents\visual studio 2012\Projects\RDB\RDB\obj\x86\Debug\RDB.HistogramCompareForm.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\bin\Debug\RDB.exe
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\bin\Debug\RDB.pdb
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.csprojResolveAssemblyReference.cache
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.clipFunction.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.HistogramCompareForm.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.HistogramForm.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.MainForm.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.ndviFunction.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.Properties.Resources.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.SelectBandsForm.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.stretchFunction.resources
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.csproj.GenerateResource.Cache
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.exe
+C:\Users\surfacebook\Documents\GitHub\RS\RDB\RDB\obj\x86\Debug\RDB.pdb

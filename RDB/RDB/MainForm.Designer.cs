@@ -189,6 +189,9 @@ namespace RDB
             this.menuSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.menuExitApp = new System.Windows.Forms.ToolStripMenuItem();
             this.Btn_ConnectDB = new System.Windows.Forms.ToolStripMenuItem();
+            this.nDVItestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stretchtestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.axMapControl1 = new ESRI.ArcGIS.Controls.AxMapControl();
             this.axToolbarControl1 = new ESRI.ArcGIS.Controls.AxToolbarControl();
             this.axTOCControl1 = new ESRI.ArcGIS.Controls.AxTOCControl();
@@ -1817,7 +1820,9 @@ namespace RDB
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuFile,
-            this.Btn_ConnectDB});
+            this.Btn_ConnectDB,
+            this.nDVItestToolStripMenuItem,
+            this.stretchtestToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(12, 4, 0, 4);
@@ -1890,6 +1895,29 @@ namespace RDB
             this.Btn_ConnectDB.Size = new System.Drawing.Size(146, 35);
             this.Btn_ConnectDB.Text = "连接数据库";
             this.Btn_ConnectDB.Click += new System.EventHandler(this.Btn_ConnectDB_Click);
+            // 
+            // nDVItestToolStripMenuItem
+            // 
+            this.nDVItestToolStripMenuItem.Name = "nDVItestToolStripMenuItem";
+            this.nDVItestToolStripMenuItem.Size = new System.Drawing.Size(130, 35);
+            this.nDVItestToolStripMenuItem.Text = "NDVItest";
+            this.nDVItestToolStripMenuItem.Click += new System.EventHandler(this.nDVItestToolStripMenuItem_Click);
+            // 
+            // stretchtestToolStripMenuItem
+            // 
+            this.stretchtestToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.testToolStripMenuItem});
+            this.stretchtestToolStripMenuItem.Name = "stretchtestToolStripMenuItem";
+            this.stretchtestToolStripMenuItem.Size = new System.Drawing.Size(151, 35);
+            this.stretchtestToolStripMenuItem.Text = "Stretchtest";
+            this.stretchtestToolStripMenuItem.Click += new System.EventHandler(this.stretchtestToolStripMenuItem_Click);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(131, 36);
+            this.testToolStripMenuItem.Text = "test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // axMapControl1
             // 
@@ -2240,6 +2268,9 @@ namespace RDB
         private System.Windows.Forms.ComboBox cmb_CreateTINLayer;
         private System.Windows.Forms.Button btn_Statistics_Bottom;
         private System.Windows.Forms.Button btn_NDVI_Bottom;
+        private System.Windows.Forms.ToolStripMenuItem nDVItestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stretchtestToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }
 
