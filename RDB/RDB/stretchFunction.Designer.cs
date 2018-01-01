@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.stxb_num = new System.Windows.Forms.TextBox();
             this.txb_NumberOfStandardDeviations = new System.Windows.Forms.TextBox();
             this.cmb_StretchType = new System.Windows.Forms.ComboBox();
@@ -37,18 +36,8 @@
             this.txb_min = new System.Windows.Forms.TextBox();
             this.txb_max = new System.Windows.Forms.TextBox();
             this.btn_Stretch = new System.Windows.Forms.Button();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.Menu;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Location = new System.Drawing.Point(139, 107);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(132, 28);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "拉伸方式";
             // 
             // stxb_num
             // 
@@ -84,31 +73,31 @@
             // 
             this.stxb_min.BackColor = System.Drawing.SystemColors.Menu;
             this.stxb_min.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.stxb_min.Font = new System.Drawing.Font("宋体", 11F);
-            this.stxb_min.Location = new System.Drawing.Point(129, 158);
+            this.stxb_min.Font = new System.Drawing.Font("宋体", 9F);
+            this.stxb_min.Location = new System.Drawing.Point(68, 160);
             this.stxb_min.Name = "stxb_min";
             this.stxb_min.ReadOnly = true;
-            this.stxb_min.Size = new System.Drawing.Size(59, 34);
+            this.stxb_min.Size = new System.Drawing.Size(123, 28);
             this.stxb_min.TabIndex = 9;
-            this.stxb_min.Text = "min";
+            this.stxb_min.Text = "MinPercent";
             this.stxb_min.Visible = false;
             // 
             // stxb_max
             // 
             this.stxb_max.BackColor = System.Drawing.SystemColors.Menu;
             this.stxb_max.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.stxb_max.Font = new System.Drawing.Font("宋体", 11F);
-            this.stxb_max.Location = new System.Drawing.Point(321, 162);
+            this.stxb_max.Font = new System.Drawing.Font("宋体", 9F);
+            this.stxb_max.Location = new System.Drawing.Point(307, 160);
             this.stxb_max.Name = "stxb_max";
             this.stxb_max.ReadOnly = true;
-            this.stxb_max.Size = new System.Drawing.Size(59, 34);
+            this.stxb_max.Size = new System.Drawing.Size(133, 28);
             this.stxb_max.TabIndex = 10;
-            this.stxb_max.Text = "max";
+            this.stxb_max.Text = "MaxPercent";
             this.stxb_max.Visible = false;
             // 
             // txb_min
             // 
-            this.txb_min.Location = new System.Drawing.Point(216, 159);
+            this.txb_min.Location = new System.Drawing.Point(204, 153);
             this.txb_min.Name = "txb_min";
             this.txb_min.Size = new System.Drawing.Size(84, 35);
             this.txb_min.TabIndex = 11;
@@ -116,7 +105,7 @@
             // 
             // txb_max
             // 
-            this.txb_max.Location = new System.Drawing.Point(410, 161);
+            this.txb_max.Location = new System.Drawing.Point(446, 153);
             this.txb_max.Name = "txb_max";
             this.txb_max.Size = new System.Drawing.Size(84, 35);
             this.txb_max.TabIndex = 12;
@@ -124,19 +113,31 @@
             // 
             // btn_Stretch
             // 
-            this.btn_Stretch.Location = new System.Drawing.Point(273, 270);
+            this.btn_Stretch.Location = new System.Drawing.Point(523, 398);
             this.btn_Stretch.Name = "btn_Stretch";
-            this.btn_Stretch.Size = new System.Drawing.Size(126, 43);
+            this.btn_Stretch.Size = new System.Drawing.Size(124, 49);
             this.btn_Stretch.TabIndex = 13;
-            this.btn_Stretch.Text = "确定";
+            this.btn_Stretch.Text = "Finish";
             this.btn_Stretch.UseVisualStyleBackColor = true;
             this.btn_Stretch.Click += new System.EventHandler(this.btn_Stretch_Click);
             // 
-            // Stretch_Definition
+            // textBox2
+            // 
+            this.textBox2.BackColor = System.Drawing.SystemColors.Menu;
+            this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox2.Location = new System.Drawing.Point(68, 103);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(174, 28);
+            this.textBox2.TabIndex = 14;
+            this.textBox2.Text = "Stretch Type";
+            // 
+            // stretchFunction
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(680, 472);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.btn_Stretch);
             this.Controls.Add(this.txb_max);
             this.Controls.Add(this.txb_min);
@@ -145,9 +146,8 @@
             this.Controls.Add(this.cmb_StretchType);
             this.Controls.Add(this.txb_NumberOfStandardDeviations);
             this.Controls.Add(this.stxb_num);
-            this.Controls.Add(this.textBox1);
-            this.Name = "Stretch_Definition";
-            this.Text = "拉伸参数设置";
+            this.Name = "stretchFunction";
+            this.Text = "StretchFunction Definition";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -155,7 +155,6 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox stxb_num;
         private System.Windows.Forms.TextBox txb_NumberOfStandardDeviations;
         private System.Windows.Forms.ComboBox cmb_StretchType;
@@ -164,5 +163,6 @@
         private System.Windows.Forms.TextBox txb_min;
         private System.Windows.Forms.TextBox txb_max;
         private System.Windows.Forms.Button btn_Stretch;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }
