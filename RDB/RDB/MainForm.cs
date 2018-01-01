@@ -215,13 +215,13 @@ namespace RDB
             {
                 //SDE连接数据库参数设置
                 IPropertySet propertySet = new PropertySet();
-                propertySet.SetProperty("SERVER", "es27");
-                propertySet.SetProperty("INSTANCE", "sde:oracle11g:es27/orcl");
-                propertySet.SetProperty("DATABASE", "sde");
+                propertySet.SetProperty("SERVER", "localhost");
+                propertySet.SetProperty("INSTANCE", "sde:oracle11g:localhost/orcl");
+                propertySet.SetProperty("DATABASE", "sde1363");
                 propertySet.SetProperty("USER", "sde");
-                propertySet.SetProperty("PASSWORD", "123");
-                propertySet.SetProperty("VERSION", "sde.DEFAULT");
-                propertySet.SetProperty("AUTHENTICATION_MORE", "DBMS");
+                propertySet.SetProperty("PASSWORD", "sde");
+                propertySet.SetProperty("VSESION", "sde.DEFAULT");
+                propertySet.SetProperty("AUTHENTICATION_MODE", "DBMS");
 
                 //指定SDE工作空间factory
                 Type factoryType = Type.GetTypeFromProgID("esriDataSourcesGDB.SdeWorkspaceFactory");
@@ -2432,10 +2432,6 @@ namespace RDB
             }
         }
 
-        private void txb_ImportRstDataset_TextChanged(object sender, EventArgs e)
-        {
-
-        }
         //点击山体阴影函数，对选定的DEM数据进行山体阴影函数处理
         private void btn_HillShade_Click(object sender, EventArgs e)
         {
@@ -3319,135 +3315,80 @@ namespace RDB
             return PixelValue;
         }
 
-        private void Btn_ReadXML_Click(object sender, EventArgs e)
+        private void tsmiEditRasterFunction_Click(object sender, EventArgs e)
         {
             try
             {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(@"D:\\RDB\\Raster_Function_Template.xml");
-
-                XmlNode xn = doc.SelectSingleNode("XmlRasterFunctionTemplate");
-
-                XmlNodeList xnl = xn.ChildNodes;
-
-                foreach (XmlNode xn1 in xnl)
+                if (TOCRightLayer is IRasterLayer)
                 {
-                    if (xn1 is XmlComment)
-                        continue;
-                    //else if (xn1.
-                    XmlElement xe = (XmlElement)xn1;
-                    if (xe.Name == "Function")
+                    RasterFunctionEditor rstFunEditor = new RasterFunctionEditor(((IRasterLayer)TOCRightLayer).Raster);
+                    rstFunEditor.ShowDialog();
+                    if (rstFunEditor.IsFinished)
                     {
-                        if (xe.GetAttribute("name").Equals("Convolution"))
-                        {                            
-                            XmlNodeList xnl0 = xe.ChildNodes;
-                            string inputRaster = null, outputRaster = null;
-                            int type = -1;
-                            bool save = false;
-                            foreach (XmlNode xn2 in xnl0){
-                                if (xn2 is XmlComment)
-                                    continue;
-                                switch (xn2.Name)
-                                {
-                                    case "Raster":
-                                        inputRaster = xn2.InnerText;
-                                        break;
-                                    case  "Type":
-                                        type = Convert.ToInt16(xn2.InnerText);
-                                        break;
-                                    case "Save":
-                                        save = Convert.ToInt16(xn2.InnerText) == 0 ? false : true;
-                                        break;
-                                    case "Output":
-                                        outputRaster = xnl0.Item(3).InnerText;
-                                        break;                                  
-                                }
-                            }
-                            ILayer layer = GetLayerByName(inputRaster);
-                            ILayer outLayer = RasterFunction.Convolution(layer, type, outputRaster);
-                            axMapControl1.AddLayer(outLayer);
-                            axMapControl1.ActiveView.Refresh();
-                            axTOCControl1.Update();
-
-                            //更新combobox里面的选项（图层的和波段的）
-                            iniCmbItems();                        
-                        }
-                        else if (xe.GetAttribute("name").Equals("Pansharpening"))
-                        {
-                            XmlNodeList xnl0 = xe.ChildNodes;
-                            double red=0, green=0, blue=0, infra=0;
-                            string panImage = null, MSImage = null, outputRaster = null;
-                            int type = -1;
-                            bool save;
-                            foreach (XmlNode xn2 in xnl0)
-                            {
-                                if (xn2 is XmlComment)
-                                    continue;
-                                switch (xn2.Name)
-                                {
-                                    case "Red":
-                                        red = Convert.ToDouble(xn2.InnerText);
-                                        break;
-                                    case "Green":
-                                        green = Convert.ToDouble(xn2.InnerText);
-                                        break;
-                                    case "Blue":
-                                        blue = Convert.ToDouble(xn2.InnerText); ;
-                                        break;
-                                    case "Infra":
-                                        infra = Convert.ToDouble(xn2.InnerText);
-                                        break;
-                                    case "PanImage":
-                                        panImage = xn2.InnerText;
-                                        break;
-                                    case "MSImage":
-                                        MSImage = xn2.InnerText;
-                                        break;
-                                    case "Type":
-                                        type = Convert.ToInt16(xn2.InnerText);
-                                        break;
-                                    case "Save":
-                                        save = Convert.ToInt16(xn2.InnerText) == 0 ? false : true;
-                                        break;
-                                    case "Output":
-                                        outputRaster = xnl0.Item(3).InnerText;
-                                        break;
-                                }
-                            }
-                            ILayer singleLayer = GetLayerByName(panImage);
-                            ILayer multiLayer = GetLayerByName(MSImage);
-
-                            ILayer panSharpenLayer = RasterFunction.Pansharpening(singleLayer, multiLayer, type, outputRaster);
-                            //添加到控件中
-                            axMapControl1.AddLayer(panSharpenLayer);
-                            axMapControl1.ActiveView.Refresh();
-                            axTOCControl1.Update();
-
-                            //更新combobox里面的选项（图层和波段的）
-                            iniCmbItems();                       
-                        }
+                        IRasterLayer resLayer = new RasterLayerClass();
+                        resLayer.Name = "Editing";
+                        resLayer.CreateFromRaster(rstFunEditor.GetRaster());
+                        axMapControl1.AddLayer(resLayer);
+                        axMapControl1.ActiveView.Refresh();
+                        axTOCControl1.Update();
+                        iniCmbItems();
                     }
-                    
+                }             
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void miRasterFunctionEditor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Imag file (*.img)|*img|Tiff file(*.tif)|*.tif|Openflight file (*.flt)|*.flt";
+                openFileDialog.Title = "打开影像数据";
+                openFileDialog.Multiselect = false;
+                string fileName = "";
+                //如果对话框已成功选择文件，将文件路径信息填写到输入框内
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    fileName = openFileDialog.FileName;
+                }
+                FileInfo fileInfo = new FileInfo(fileName);
+                string filePath = fileInfo.DirectoryName;
+                string file = fileInfo.Name;
+                IWorkspaceFactory rstWorkspaceFactoryImport = new RasterWorkspaceFactoryClass();
+                IRasterWorkspace rstWorkspaceImport = (IRasterWorkspace)rstWorkspaceFactoryImport.OpenFromFile(filePath, 0);
+                IRasterDataset rstDatasetImport = null;
+                //检测选择的文件路径是不是有效的栅格工作空间
+                if (!(rstWorkspaceImport is IRasterWorkspace))
+                {
+                    MessageBox.Show("文件路径不是有效的栅格工作空间！");
+                    return;
+                }
+                //根据选择的栅格图像名字获取栅格数据集
+                rstDatasetImport = rstWorkspaceImport.OpenRasterDataset(file);
+                //用IRasterDataset接口的CreateDefaultRaster方法创建空白的栅格对象
+                IRaster raster = rstDatasetImport.CreateDefaultRaster();
+
+                RasterFunctionEditor rstFunEditor = new RasterFunctionEditor(raster);
+                rstFunEditor.ShowDialog();
+                if (rstFunEditor.IsFinished)
+                {
+                    IRasterLayer resLayer = new RasterLayerClass();
+                    resLayer.Name = "Editing";
+                    resLayer.CreateFromRaster(rstFunEditor.GetRaster());
+                    axMapControl1.AddLayer(resLayer);
+                    axMapControl1.ActiveView.Refresh();
+                    axTOCControl1.Update();
+                    iniCmbItems();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-            }
-           
-            
-        }
-
-        private void convolutionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ConvolutionFunc conv = new ConvolutionFunc(axMapControl1.Map);
-            conv.ShowDialog();
-        }
-
-        private void pansharpingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PansharpingFunc pansharping = new PansharpingFunc(axMapControl1.Map);
-            pansharping.ShowDialog();
+                MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }     
         }
 
 

@@ -277,13 +277,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConvolutionFunc.cs">
+    <Compile Include="aspectFunction.cs" />
+    <Compile Include="clipFunction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConvolutionFunc.Designer.cs">
-      <DependentUpon>ConvolutionFunc.cs</DependentUpon>
+    <Compile Include="clipFunction.Designer.cs" />
+    <Compile Include="convolutionFunction.cs">
+      <SubType>Form</SubType>
     </Compile>
+    <Compile Include="convolutionFunction.Designer.cs" />
     <Compile Include="CreateNewDocument.cs" />
+    <Compile Include="hillshadeFunction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="hillshadeFunction.Designer.cs" />
     <Compile Include="HistogramCompareForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -306,24 +313,37 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PansharpingFunc.cs">
+    <Compile Include="ndviFunction.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PansharpingFunc.Designer.cs">
-      <DependentUpon>PansharpingFunc.cs</DependentUpon>
+    <Compile Include="ndviFunction.Designer.cs" />
+    <Compile Include="panSharpenFunction.cs">
+      <SubType>Form</SubType>
     </Compile>
+    <Compile Include="panSharpenFunction.Designer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RasterFunction.cs" />
+    <Compile Include="RasterFunctionEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RasterFunctionEditor.Designer.cs" />
     <Compile Include="SelectBandsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SelectBandsForm.Designer.cs">
       <DependentUpon>SelectBandsForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ConvolutionFunc.resx">
-      <DependentUpon>ConvolutionFunc.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="slopeFunction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="slopeFunction.Designer.cs" />
+    <Compile Include="stretchFunction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="stretchFunction.Designer.cs" />
+    <EmbeddedResource Include="clipFunction.resx" />
+    <EmbeddedResource Include="convolutionFunction.resx" />
+    <EmbeddedResource Include="hillshadeFunction.resx" />
     <EmbeddedResource Include="HistogramCompareForm.resx">
       <DependentUpon>HistogramCompareForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -334,9 +354,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PansharpingFunc.resx">
-      <DependentUpon>PansharpingFunc.cs</DependentUpon>
-    </EmbeddedResource>
+    <EmbeddedResource Include="ndviFunction.resx" />
+    <EmbeddedResource Include="panSharpenFunction.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -347,9 +366,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RasterFunctionEditor.resx" />
     <EmbeddedResource Include="SelectBandsForm.resx">
       <DependentUpon>SelectBandsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="slopeFunction.resx" />
+    <EmbeddedResource Include="stretchFunction.resx" />
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

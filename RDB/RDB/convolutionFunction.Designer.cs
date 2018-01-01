@@ -1,6 +1,6 @@
 ﻿namespace RDB
 {
-    partial class ConvolutionFunc
+    partial class convolutionFunction
     {
         /// <summary>
         /// Required designer variable.
@@ -40,7 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.cmb_FliterLayer = new System.Windows.Forms.ComboBox();
+            this.cmb_FilterLayer = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -108,7 +108,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.cmb_FliterLayer);
+            this.tabPage2.Controls.Add(this.cmb_FilterLayer);
             this.tabPage2.Controls.Add(this.cmb_FliterMethod);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.label3);
@@ -166,15 +166,15 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // cmb_FliterLayer
+            // cmb_FilterLayer
             // 
-            this.cmb_FliterLayer.FormattingEnabled = true;
-            this.cmb_FliterLayer.Location = new System.Drawing.Point(213, 59);
-            this.cmb_FliterLayer.Name = "cmb_FliterLayer";
-            this.cmb_FliterLayer.Size = new System.Drawing.Size(121, 20);
-            this.cmb_FliterLayer.TabIndex = 6;
+            this.cmb_FilterLayer.FormattingEnabled = true;
+            this.cmb_FilterLayer.Location = new System.Drawing.Point(213, 59);
+            this.cmb_FilterLayer.Name = "cmb_FilterLayer";
+            this.cmb_FilterLayer.Size = new System.Drawing.Size(121, 20);
+            this.cmb_FilterLayer.TabIndex = 6;
             // 
-            // ConvolutionFunc
+            // convolutionFunction
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -182,7 +182,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.tabControl1);
-            this.Name = "ConvolutionFunc";
+            this.Name = "convolutionFunction";
             this.Text = "ConvolutionFunction";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -207,6 +207,6 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ComboBox cmb_FliterLayer;
+        private System.Windows.Forms.ComboBox cmb_FilterLayer;
     }
 }

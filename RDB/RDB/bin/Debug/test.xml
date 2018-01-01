@@ -1,0 +1,24 @@
+<XmlRasterFunctionTemplate>
+  <Name>Raster Funciton Template</Name>
+  <Description>A raster function template.</Description>
+  <Function name="Pansharpening" description="Enhances the spatial resolution of a multiband image by fusing it with a higher-resolution panchromatic image.">
+    <PanImage>default</PanImage>
+    <PansharpeningType>0</PansharpeningType>
+    <Red>0.166</Red>
+    <Green>0.166</Green>
+    <Blue>0.166</Blue>
+    <Infra>0.5</Infra>
+    <Output>test_Result</Output>
+  </Function>
+  <Function name="ndviFunction" description="A raster NDVI function.">
+    <InfraredBandID>3</InfraredBandID>
+    <VisibleBandID>2</VisibleBandID>
+  </Function>
+  <Function name="clipFunction" description="A raster clip function.">
+    <inputSHPPath />
+  </Function>
+  <Function name="hillshadeFunction" description="A raster hillshade function.">
+    <Azimuth>10</Azimuth>
+    <ZFactor>9.00009000090001E-05</ZFactor>
+  </Function>
+</XmlRasterFunctionTemplate>
