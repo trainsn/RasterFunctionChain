@@ -35,6 +35,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.txb_single = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.txb_IR = new System.Windows.Forms.TextBox();
@@ -47,12 +48,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.cmb_PanMethod = new System.Windows.Forms.ComboBox();
-            this.cmb_PanSharpenMultiLayer = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.txb_single = new System.Windows.Forms.TextBox();
             this.tabPage1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -123,8 +121,6 @@
             this.tabPage2.Controls.Add(this.txb_single);
             this.tabPage2.Controls.Add(this.label10);
             this.tabPage2.Controls.Add(this.panel1);
-            this.tabPage2.Controls.Add(this.cmb_PanSharpenMultiLayer);
-            this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
@@ -134,10 +130,19 @@
             this.tabPage2.Text = "Attribute Table";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // txb_single
+            // 
+            this.txb_single.Location = new System.Drawing.Point(233, 50);
+            this.txb_single.Name = "txb_single";
+            this.txb_single.Size = new System.Drawing.Size(140, 21);
+            this.txb_single.TabIndex = 11;
+            this.txb_single.Text = "Pansharpening Function";
+            this.txb_single.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txb_single_MouseDown);
+            // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(37, 150);
+            this.label10.Location = new System.Drawing.Point(37, 113);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(65, 12);
             this.label10.TabIndex = 10;
@@ -156,7 +161,7 @@
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.cmb_PanMethod);
-            this.panel1.Location = new System.Drawing.Point(60, 175);
+            this.panel1.Location = new System.Drawing.Point(60, 138);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(365, 227);
             this.panel1.TabIndex = 9;
@@ -247,27 +252,10 @@
             this.cmb_PanMethod.Size = new System.Drawing.Size(121, 20);
             this.cmb_PanMethod.TabIndex = 5;
             // 
-            // cmb_PanSharpenMultiLayer
-            // 
-            this.cmb_PanSharpenMultiLayer.FormattingEnabled = true;
-            this.cmb_PanSharpenMultiLayer.Location = new System.Drawing.Point(236, 104);
-            this.cmb_PanSharpenMultiLayer.Name = "cmb_PanSharpenMultiLayer";
-            this.cmb_PanSharpenMultiLayer.Size = new System.Drawing.Size(121, 20);
-            this.cmb_PanSharpenMultiLayer.TabIndex = 8;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(97, 104);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(83, 12);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Multispectral";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(97, 43);
+            this.label3.Location = new System.Drawing.Point(97, 53);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 12);
             this.label3.TabIndex = 3;
@@ -292,15 +280,6 @@
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // txb_single
-            // 
-            this.txb_single.Location = new System.Drawing.Point(233, 40);
-            this.txb_single.Name = "txb_single";
-            this.txb_single.Size = new System.Drawing.Size(140, 21);
-            this.txb_single.TabIndex = 11;
-            this.txb_single.Text = "Pansharpening Function";
-            this.txb_single.MouseDown += new System.Windows.Forms.MouseEventHandler(this.txb_single_MouseDown);
             // 
             // panSharpenFunction
             // 
@@ -337,8 +316,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ComboBox cmb_PanSharpenMultiLayer;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label9;

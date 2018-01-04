@@ -37,10 +37,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.cmb_FliterMethod = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.cmb_FilterLayer = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -50,7 +48,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(-2, -3);
+            this.tabControl1.Location = new System.Drawing.Point(-2, -4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(487, 284);
@@ -108,10 +106,8 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.cmb_FilterLayer);
             this.tabPage2.Controls.Add(this.cmb_FliterMethod);
             this.tabPage2.Controls.Add(this.label4);
-            this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -123,7 +119,7 @@
             // cmb_FliterMethod
             // 
             this.cmb_FliterMethod.FormattingEnabled = true;
-            this.cmb_FliterMethod.Location = new System.Drawing.Point(213, 127);
+            this.cmb_FliterMethod.Location = new System.Drawing.Point(213, 104);
             this.cmb_FliterMethod.Name = "cmb_FliterMethod";
             this.cmb_FliterMethod.Size = new System.Drawing.Size(121, 20);
             this.cmb_FliterMethod.TabIndex = 5;
@@ -131,20 +127,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(101, 130);
+            this.label4.Location = new System.Drawing.Point(101, 107);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 12);
             this.label4.TabIndex = 4;
             this.label4.Text = "Type";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(81, 62);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 12);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Input Raster";
             // 
             // button1
             // 
@@ -165,14 +152,6 @@
             this.button2.Text = "Cancel";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // cmb_FilterLayer
-            // 
-            this.cmb_FilterLayer.FormattingEnabled = true;
-            this.cmb_FilterLayer.Location = new System.Drawing.Point(213, 59);
-            this.cmb_FilterLayer.Name = "cmb_FilterLayer";
-            this.cmb_FilterLayer.Size = new System.Drawing.Size(121, 20);
-            this.cmb_FilterLayer.TabIndex = 6;
             // 
             // convolutionFunction
             // 
@@ -203,10 +182,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmb_FliterMethod;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ComboBox cmb_FilterLayer;
     }
 }

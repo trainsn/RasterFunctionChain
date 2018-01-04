@@ -36,6 +36,7 @@ namespace RDB
         IRaster m_raster;
         string inputRaster = null, outputRaster = null;
         int type = 0;
+        public bool IsFinished = false;
         
         public convolutionFunction(XmlNode node)
         {
@@ -71,9 +72,6 @@ namespace RDB
                         break;
                 }
             }
-
-           cmb_FilterLayer.Items.Add("test");
-            if (cmb_FilterLayer.Items.Count > 0) cmb_FilterLayer.SelectedIndex = 0;
 
             //添加滤波方法
             cmb_FliterMethod.Items.Add("LineDetectionHorizontal");
@@ -114,6 +112,8 @@ namespace RDB
             xe.GetElementsByTagName("Type").Item(0).InnerText = cmb_FliterMethod.SelectedIndex.ToString();
             xe.GetElementsByTagName("Output").Item(0).InnerText = "_conv";
             m_xmlNode = (XmlNode)xe;
+            IsFinished = true;
+
             this.Close();
         }
 
@@ -145,10 +145,7 @@ namespace RDB
                 functionRasterDataset.Init(rasterFunction, rasterFunctionArguments);
 
                 IRasterDataset rasData = functionRasterDataset as IRasterDataset;
-                IRasterLayer pRstLayer = new RasterLayerClass();
-                pRstLayer.CreateFromDataset(rasData);
-
-                m_raster = pRstLayer.Raster;
+                m_raster = ((IRasterDataset2)rasData).CreateFullRaster();
             }
             catch (System.Exception ex)//异常处理，输出错误信息
             {
@@ -262,11 +259,11 @@ namespace RDB
                 resultRasterEdit.Refresh();
             } while (resultRasterCursor.Next() == true && rasterCursor.Next() == true);
             IRasterDataset pRasterDs = pRasterWs.OpenRasterDataset("raster" + "_" + cmb_FliterMethod.SelectedItem.ToString() + ".tif");
-            IRaster praster = pRasterDs.CreateDefaultRaster();
+            IRaster praster = ((IRasterDataset2)pRasterDs).CreateFullRaster();
 
-            IRasterLayer resLayer = new RasterLayerClass();
-            resLayer.CreateFromRaster(praster);
-            m_raster = resLayer.Raster;
+            //IRasterLayer resLayer = new RasterLayerClass();
+            //resLayer.CreateFromRaster(praster);
+            m_raster = praster;
         }
     }
 }

@@ -673,6 +673,7 @@ namespace RDB
                                  {
                                      ndviFunction ndviFunction = new ndviFunction(m_raster,xn1);
                                      ndviFunction.Init();
+                                     //ndviFunction.UnderInit();
                                      m_raster = ndviFunction.GetRaster();
                                      break;
                                  }

@@ -37,6 +37,7 @@ namespace RDB
         double red = 0, green = 0, blue = 0, infra = 0;
         string panImage = null, MSImage = null, outputRaster = null;
         int type = -1;
+        public bool IsFinished = false;
         
         public panSharpenFunction(XmlNode node)
         {
@@ -88,8 +89,6 @@ namespace RDB
                         break;
                 }
             }
-            cmb_PanSharpenMultiLayer.Items.Add("test");
-            if (cmb_PanSharpenMultiLayer.Items.Count > 0) cmb_PanSharpenMultiLayer.SelectedIndex = 0;
 
             //添加滤波方法
             cmb_PanMethod.Items.Add("Brovey");
@@ -121,9 +120,9 @@ namespace RDB
             xe.GetElementsByTagName("Red").Item(0).InnerText = txb_red.Text;
             xe.GetElementsByTagName("Green").Item(0).InnerText = txb_green.Text;
             xe.GetElementsByTagName("Blue").Item(0).InnerText = txb_blue.Text;
-            xe.GetElementsByTagName("Infra").Item(0).InnerText = txb_IR.Text;
-            xe.GetElementsByTagName("Output").Item(0).InnerText = cmb_PanSharpenMultiLayer.SelectedItem.ToString() + "_Result";
+            xe.GetElementsByTagName("Infra").Item(0).InnerText = txb_IR.Text;        
             m_xmlNode = (XmlNode)xe;
+            IsFinished = true;
             this.Close();
         }
 
