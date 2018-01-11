@@ -1,0 +1,12 @@
+<XmlRasterFunctionTemplate>
+  <Name>Raster Funciton Template</Name>
+  <Description>A raster function template.</Description>
+  <Function name="Slope" description="Slope represents the rate of change of elevation for each digital elevation model (DEM) cell. It's the first derivative of a DEM.">
+    <Zfactor>9.00009000090001E-05</Zfactor>
+  </Function>
+  <Function name="hillshadeFunction" description="A raster hillshade function.">
+    <Azimuth>50</Azimuth>
+    <ZFactor>9.00009000090001E-05</ZFactor>
+  </Function>
+  <Function name="Aspect" description="Aspect identifies the downslope direction of the maximum rate of change in value from each cell to its neighbors. Aspect can be thought of as the slope direction. The values of the output raster will be the compass direction of the aspect." />
+</XmlRasterFunctionTemplate>
