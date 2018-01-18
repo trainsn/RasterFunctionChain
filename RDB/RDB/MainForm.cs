@@ -7,6 +7,7 @@ using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
+using System.Collections.Generic;
 
 
 using ESRI.ArcGIS.esriSystem;
@@ -112,7 +113,9 @@ namespace RDB
         bool fLineOfSight = false;//通视分析
         bool fVisibility = false;//视域分析
         bool fTIN = false;//手绘构建TIN
+        bool fVoronoi = false; //底层实现voronoi图
         ITinEdit TinEdit=new TinClass();//TIN
+        List<IPoint> locations = new List<IPoint>();
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -1920,6 +1923,12 @@ namespace RDB
                 panSharpenLayer.Name = "panSharpen_Result";
                 panSharpenLayer.SpatialReference = ((IGeoDataset)multiRaster).SpatialReference;
 
+                IWorkspaceFactory wsf = new RasterWorkspaceFactory();
+                IWorkspace rstWs = wsf.OpenFromFile(@"D:\\RDB", 0);
+                //保存输出
+                ISaveAs saveas = (ISaveAs)multiRaster;
+                saveas.SaveAs("pansharpen_result.tif", rstWs, "TIFF"); 
+
                 //添加到控件中
                 axMapControl1.AddLayer(panSharpenLayer);
                 axMapControl1.ActiveView.Refresh();
@@ -2379,6 +2388,23 @@ namespace RDB
                         pGra.AddElement(pElement, 0);
                         pActiview.PartialRefresh(esriViewDrawPhase.esriViewGeography, null, null);
                     }
+                }
+                else if (fVoronoi == true)
+                {
+                    //获取选中的dem图层和raster数据
+                    ILayer layer = GetLayerByName(cmb_CreateTINLayer.SelectedItem.ToString());
+
+                    locations.Clear();
+                    //获取栅格图层的栅格对象
+                    if (layer is IRasterLayer)
+                    {
+                        //获取需要进行构建TIN的栅格数据对象
+                        IRasterLayer pRasterLayer = (IRasterLayer)layer;
+                        //为构建TIN添加Point结点
+                        IPoint Point = new PointClass();
+                        Point = axMapControl1.ToMapPoint(e.x, e.y);
+                        locations.Add(Point);                     
+                    }                                       
                 }
             }
             catch (System.Exception ex)//异常处理，输出错误信息
@@ -3043,7 +3069,55 @@ namespace RDB
                     axMapControl1.Update();
 
                     iniCmbItems();
-                    
+
+                }
+                else if (fVoronoi == true)
+                {
+                    //实例化要素描述对象来获取构建要素类必须的字段集合
+                    IFeatureClassDescription fcDescription = new FeatureClassDescriptionClass();
+                    IObjectClassDescription ocDescription = (IObjectClassDescription)fcDescription;
+                    IFields fields = ocDescription.RequiredFields;
+                    //找到shape形状字段，设置集合类型和投影坐标系统
+                    int shapeFieldIndex = fields.FindField(fcDescription.ShapeFieldName);
+                    IField field = fields.get_Field(shapeFieldIndex);
+                    IGeometryDef geometryDef = field.GeometryDef;
+                    IGeometryDefEdit geometryDefEdit = (IGeometryDefEdit)geometryDef;
+                    //设置几何类型
+                    geometryDefEdit.GeometryType_2 = esriGeometryType.esriGeometryPolygon;
+                    ISpatialReferenceFactory spatialReferenceFactory = new SpatialReferenceEnvironmentClass();
+                    ISpatialReference spatialReference = spatialReferenceFactory.CreateProjectedCoordinateSystem((int)esriSRProjCSType.esriSRProjCS_NAD1983UTM_20N);
+                    ISpatialReferenceResolution spatialReferenceResolution = (ISpatialReferenceResolution)spatialReference;
+                    spatialReferenceResolution.ConstructFromHorizon();
+                    spatialReferenceResolution.SetDefaultXYResolution();
+                    ISpatialReferenceTolerance spatialReferenceTolerance = (ISpatialReferenceTolerance)spatialReference;
+                    spatialReferenceTolerance.SetDefaultXYTolerance();
+                    //设置坐标系统
+                    geometryDefEdit.SpatialReference_2 = spatialReference;
+
+                    //转换工作空间接口
+                    IFeatureWorkspace featureWorkspace = (IFeatureWorkspace)workspace;
+                    //保存到指定路径
+                    IWorkspaceFactory wsf = new ShapefileWorkspaceFactory();
+                    IWorkspace wp = wsf.OpenFromFile("D://RDB", 0);
+                    IFeatureWorkspace fw = (IFeatureWorkspace)wp;
+                    //创建要素类
+                    IFeatureClass featureClass = featureWorkspace.CreateFeatureClass("bottomVoronoi", fields, ocDescription.InstanceCLSID, ocDescription.ClassExtensionCLSID, esriFeatureType.esriFTSimple, fcDescription.ShapeFieldName, "");
+
+                    string outputFeatureClassName = "Polygons";
+                    IFeatureClass featureClassPolygons = CreateFeatureClassOutput(workspace, Helper.GetSpatialReference(featureClass), outputFeatureClassName);
+
+                    IList<IGeometry> thiessenPolygons = Triangulation.GeometryVoronoi(locations);
+
+                    int idxId = featureClassPolygons.FindField("Id");
+                    int i = 0;
+                    foreach (IGeometry pg in thiessenPolygons)
+                    {
+                        i++;
+                        IFeature feature = featureClassPolygons.CreateFeature();
+                        feature.Shape = pg as IPolygon;
+                        feature.set_Value(idxId, i);
+                        feature.Store();
+                    }
                 }
             }
             catch (System.Exception ex)//捕获异常，输出异常信息
@@ -3389,6 +3463,69 @@ namespace RDB
             {
                 MessageBox.Show(ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }     
+        }
+
+        private void btn_voronoi_bottom_Click(object sender, EventArgs e)
+        {
+            fVoronoi = true;
+        }
+
+        private static IFeatureClass CreateFeatureClassOutput(IWorkspace workspace, ISpatialReference spatialReference, string nameFeatureClass)
+        {
+            IFeatureClassDescription featureClassDescription = new FeatureClassDescriptionClass();
+            IObjectClassDescription objectClassDescription = (IObjectClassDescription)featureClassDescription;
+
+            IFeatureWorkspace featureWorkspace = (IFeatureWorkspace)workspace;
+
+            // Create the fields collection.
+            IFields fields = new FieldsClass();
+            IFieldsEdit fieldsEdit = (IFieldsEdit)fields;
+
+            IField oidField = new FieldClass();
+            IFieldEdit oidFieldEdit = (IFieldEdit)oidField;
+            oidFieldEdit.Name_2 = "OBJECTID";
+            oidFieldEdit.Type_2 = esriFieldType.esriFieldTypeOID;
+            fieldsEdit.AddField(oidField);
+
+            // Create the Shape field.
+            IField shapeField = new Field();
+            IFieldEdit shapeFieldEdit = (IFieldEdit)shapeField;
+
+            // Set up the geometry definition for the Shape field.
+            IGeometryDef geometryDef = new GeometryDefClass();
+            IGeometryDefEdit geometryDefEdit = (IGeometryDefEdit)geometryDef;
+            geometryDefEdit.GeometryType_2 = esriGeometryType.esriGeometryPolygon;
+
+            // By setting the grid size to 0, you're allowing ArcGIS to determine the appropriate grid sizes for the feature class. 
+            // If in a personal geodatabase, the grid size will be 1000. If in a file or ArcSDE geodatabase, the grid size
+            // will be based on the initial loading or inserting of features.
+            geometryDefEdit.HasM_2 = false;
+            geometryDefEdit.HasZ_2 = false;
+
+            geometryDefEdit.SpatialReference_2 = spatialReference;
+
+            // Set standard field properties.
+            shapeFieldEdit.Name_2 = featureClassDescription.ShapeFieldName;
+            shapeFieldEdit.Type_2 = esriFieldType.esriFieldTypeGeometry;
+            shapeFieldEdit.GeometryDef_2 = geometryDef;
+            shapeFieldEdit.IsNullable_2 = true;
+            shapeFieldEdit.Required_2 = true;
+            fieldsEdit.AddField(shapeField);
+
+            IField idField = new FieldClass();
+            IFieldEdit idIsolaFieldEdit = (IFieldEdit)idField;
+            idIsolaFieldEdit.Name_2 = "Id";
+            idIsolaFieldEdit.Type_2 = esriFieldType.esriFieldTypeInteger;
+            fieldsEdit.AddField(idField);
+
+            // Use IFieldChecker to create a validated fields collection.
+            IFieldChecker fieldChecker = new FieldCheckerClass();
+            IEnumFieldError enumFieldError = null;
+            IFields validatedFields = null;
+            fieldChecker.ValidateWorkspace = workspace;
+            fieldChecker.Validate(fields, out enumFieldError, out validatedFields);
+
+            return featureWorkspace.CreateFeatureClass(nameFeatureClass, fields, objectClassDescription.InstanceCLSID, objectClassDescription.ClassExtensionCLSID, esriFeatureType.esriFTSimple, featureClassDescription.ShapeFieldName, string.Empty);
         }
 
 

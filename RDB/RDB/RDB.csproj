@@ -291,6 +291,7 @@
       <DependentUpon>convolutionFunction.cs</DependentUpon>
     </Compile>
     <Compile Include="CreateNewDocument.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="hillshadeFunction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -345,6 +346,9 @@
     <Compile Include="SelectBandsForm.Designer.cs">
       <DependentUpon>SelectBandsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="SimpleFunction.cs" />
+    <Compile Include="SimplePoint.cs" />
+    <Compile Include="SimpleTriangle.cs" />
     <Compile Include="slopeFunction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -357,6 +361,7 @@
     <Compile Include="stretchFunction.Designer.cs">
       <DependentUpon>stretchFunction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Triangulation.cs" />
     <EmbeddedResource Include="clipFunction.resx">
       <DependentUpon>clipFunction.cs</DependentUpon>
     </EmbeddedResource>
